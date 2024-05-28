@@ -29,11 +29,15 @@ SECRET_KEY = 'django-insecure-6eev7#byl$d%x3wx1q$-^6tiy3thepachh*8alv09p60cg-gge
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '1353-2407-5200-400-e0-dbf-ec-8c3f-6f0d.ngrok-free.app'
+]
+
+CSRF_TRUSTED_ORIGINS = ["https://1353-2407-5200-400-e0-dbf-ec-8c3f-6f0d.ngrok-free.app"]
 
 
-
-# AUTH_USER_MODEL = 'customuser.Users'
+AUTH_USER_MODEL = 'user.Users'
 
 
 CORS_ALLOW_CREDENTIALS = True
@@ -68,10 +72,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'user',
+    'music',
+    'album',
+    'genre',
+    'role'
 ]
 
 MIDDLEWARE = [
