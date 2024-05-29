@@ -6,14 +6,20 @@ from .manager import UserManager, AdminManager, ArtistManager
 from band.models  import Band
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
+GENDER_CHOICES = (
+        (0, 'Male'),
+        (1, 'Female'),
+        (2, 'Others'),
+    )
 class Users(AbstractBaseUser, PermissionsMixin):
+     
     email = models.CharField(max_length=50, null=False, unique=True)
     username = models.CharField(max_length=50, unique=True, null=False)
     firstname = models.CharField(max_length=50, null=True)
     lastname = models.CharField(max_length=50, null=True)
     dob = models.DateField(null=True)
-    bio = models.CharField(max_length=200, null=True)
-    gender = models.CharField(max_length=100, default="Male")
+    bio = models.TextField(null=True)
+    gender = models.IntegerChoices(choices=GENDER_CHOICES)
     country = models.CharField(max_length=50, null=True)
     img_profile = models.ImageField(upload_to='uploads/user/')
     is_artist = models.BooleanField(default=False)
