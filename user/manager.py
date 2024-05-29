@@ -63,6 +63,3 @@ class UserManager(BaseUserManager):
         except:
             return "No Data Found"
         return res
-
-
-        # aasdasd
