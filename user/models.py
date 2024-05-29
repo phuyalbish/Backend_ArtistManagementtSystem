@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from .manager import UserManager, AdminManager, ArtistManager
+from band.models  import Band
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 class Users(AbstractBaseUser, PermissionsMixin):
@@ -25,7 +26,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
     admin = AdminManager()
-    artist1 = ArtistManager()
+    artist = ArtistManager()
 
 
     USERNAME_FIELD = 'email'
@@ -42,7 +43,7 @@ class Artist(models.Model):
     img_cover = models.ImageField(upload_to='uploads/user/', null=True)
     totallike = models.IntegerField(default=0)
     totalmusic = models.IntegerField(default=0)
+    band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     totalfollower = models.IntegerField(default=0)
-    def __str__(self):  
-        return self.stagename
+    modified_by = models.CharField(max_length=50, null=True)
 

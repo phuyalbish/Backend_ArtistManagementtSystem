@@ -45,7 +45,7 @@ class AdminManager(models.Manager):
 
     def getAdmin(self):
         try:
-                res = super().get().filter(is_staff=True).filter(is_deleted=False, is_disabled=False)
+                res = super().get_queryset().filter(is_staff=True).filter(is_deleted=False, is_disabled=False)
         except:
             return "No Data Found"
         return res
@@ -53,21 +53,21 @@ class AdminManager(models.Manager):
 
 
 class ArtistManager(models.Manager):
-    # def create_artist(self, email, password=None, **kwargs):
-    #     if not email:
-    #         raise ValueError("Email is required")
+    def create_artist(self, email, password=None, **kwargs):
+        if not email:
+            raise ValueError("Email is required")
         
-    #     kwargs.setdefault("is_artist", True)
+        kwargs.setdefault("is_artist", True)
 
-    #     user = self.model(email=email, **kwargs)
-    #     user.set_password(password)
-    #     user.save()
+        user = self.model(email=email, **kwargs)
+        user.set_password(password)
+        user.save()
         
-    #     return user
+        return user
 
     def getArtist(self):
         try:
-            res = super().get().filter(is_artist=True).filter(is_deleted=False, is_disabled=False)
+            res = super().get_queryset().filter(is_artist=True).filter(is_deleted=False, is_disabled=False)
         except:
             return "No Data Found"
         return res

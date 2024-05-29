@@ -1,12 +1,14 @@
 from django.utils import timezone
 from django.db import models
 from user.models import Users
+from band.models  import Band
 class Album(models.Model):
     name = models.CharField(max_length=50, null=False)
     description =  models.CharField(max_length=50, null=True)
     img_banner = models.ImageField(upload_to='uploads/album/', null=True)
     img_profile = models.ImageField(upload_to='uploads/album/', null=True)
     artist = models.ForeignKey(Users, default="Anonymous", on_delete=models.SET_DEFAULT)
+    band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(default=timezone.now)
     release_at = models.DateTimeField(default=timezone.now)
     totallike = models.IntegerField(default=0)
