@@ -28,7 +28,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
-    created_by = models.IntegerChoices(null=True)
+    created_by = models.IntegerField(null=True)
     created_at = models.DateField(timezone.now)
     modified_by = models.IntegerField(null=True)
 
