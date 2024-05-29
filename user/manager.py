@@ -28,50 +28,41 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
     
-    
 
-class AdminManager(models.Manager):
+
     def create_staff(self, email, password, **kwargs):
-        if not email:
-            raise ValueError("Email is required")
-        if not password:
-            raise ValueError('Password is Required')
-        
-        kwargs.setdefault("is_staff", True)
-        user = self.model(email=email, **kwargs)
-        user.set_password(password)
-        user.save()
-        return user
+            if not email:
+                raise ValueError("Email is required")
+            if not password:
+                raise ValueError('Password is Required')
+            
+            kwargs.setdefault("is_staff", True)
+            user = self.model(email=email, **kwargs)
+            user.set_password(password)
+            user.save()
+            return user
 
     def getAdmin(self):
-        try:
-                res = super().get_queryset().filter(is_staff=True).filter(is_deleted=False, is_disabled=False)
-        except:
-            return "No Data Found"
-        return res
+            try:
+                    res = super().get_queryset().filter(is_staff=True).filter(is_deleted=False, is_disabled=False)
+            except:
+                return "No Data Found"
+            return res
 
 
 
-class ArtistManager(models.Manager):
-    def create_artist(self, email, password=None, **kwargs):
-        if not email:
-            raise ValueError("Email is required")
-        
-        kwargs.setdefault("is_artist", True)
+    def create_artist(self, email, password=None, **other_fields):
+        other_fields.setdefault("is_artist", True)
+        other_fields.setdefault("is_active", True)
 
-        user = self.model(email=email, **kwargs)
-        user.set_password(password)
-        user.save()
-        
-        return user
-
+        return self.create_user(email, password, **other_fields)
+    
     def getArtist(self):
         try:
             res = super().get_queryset().filter(is_artist=True).filter(is_deleted=False, is_disabled=False)
         except:
             return "No Data Found"
         return res
-        # return super().get_queryset().filter(is_artist=True).filter(is_deleted=False, is_disabled=False)
 
 
-
+        # aasdasd
