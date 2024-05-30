@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.logout import Login
+from .views.login import Login
 from user.views.get import GetUserSpecific
 from user.views.create import CreateUser
 from user.views.edit import EditUser
