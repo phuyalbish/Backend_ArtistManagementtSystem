@@ -14,4 +14,5 @@ urlpatterns = [
     path('user/edit/<int:userid>/', EditUser.as_view(), name="edit_user"),
     path('user/delete/<int:userid>/', DeleteUser.as_view(), name="delete_user"),
     path('user/recover/<int:userid>/', RecoverUser.as_view(), name="recover_user"),
+
 ]
