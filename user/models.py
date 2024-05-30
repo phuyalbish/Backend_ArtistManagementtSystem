@@ -1,23 +1,25 @@
 from django.db import models
-
+from django.utils  import timezone
+# Create your models here.
 from django.db import models
 from .manager import UserManager
 from band.models  import Band
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
+
 class Users(AbstractBaseUser, PermissionsMixin):
-    GENDER_CHOICES = (
-            (0, 'Male'),
-            (1, 'Female'),
-            (2, 'Others'),
-        )
+    GENDER = (
+        (0, 'Male'),
+        (1, 'Female'),
+        (2, 'Others'),
+    )
     email = models.CharField(max_length=50, null=False, unique=True)
     username = models.CharField(max_length=50, unique=True, null=False)
     firstname = models.CharField(max_length=50, null=True)
     lastname = models.CharField(max_length=50, null=True)
     dob = models.DateField(null=True)
     bio = models.TextField(null=True)
-    gender = models.IntegerField(choices=GENDER_CHOICES,default=0)
+    gender = models.IntegerField(choices=GENDER, default=0)
     country = models.CharField(max_length=50, null=True)
     img_profile = models.ImageField(upload_to='uploads/user/')
     is_artist = models.BooleanField(default=False)
@@ -26,7 +28,9 @@ class Users(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
-    modified_by = models.CharField(max_length=50, null=True)
+    created_by = models.IntegerField(null=True)
+    created_at = models.DateField(default=timezone.now)
+    modified_by = models.IntegerField(null=True)
 
     objects = UserManager()
 
