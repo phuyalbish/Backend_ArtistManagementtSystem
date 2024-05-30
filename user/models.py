@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
-from .manager import UserManager, AdminManager, ArtistManager
+from .manager import UserManager
 from band.models  import Band
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
@@ -19,9 +19,9 @@ class Users(AbstractBaseUser, PermissionsMixin):
     lastname = models.CharField(max_length=50, null=True)
     dob = models.DateField(null=True)
     bio = models.TextField(null=True)
-    gender = models.IntegerChoices(choices=GENDER_CHOICES)
+    gender = models.IntegerField(choices=GENDER_CHOICES)
     country = models.CharField(max_length=50, null=True)
-    img_profile = models.ImageField(upload_to='uploads/user/')
+    img_profile = models.ImageField(upload_to='uploads/user/', null=True)
     is_artist = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -31,9 +31,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
     modified_by = models.CharField(max_length=50, null=True)
 
     objects = UserManager()
-    admin = AdminManager()
-    artist = ArtistManager()
-
 
     USERNAME_FIELD = 'email'
 
