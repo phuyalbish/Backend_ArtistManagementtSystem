@@ -6,12 +6,13 @@ from music.serializers import MusicSerializer
 class EnableDisableDecorator:
     def __call__(self, func):
         def wrapper(instance, request, musicid):
+        
             try:
-                user = Music.objects.get(id=musicid)
+                music = Music.objects.get(id=musicid)
             except Music.DoesNotExist:
                 return Response({"msg": "Music not found"}, status=status.HTTP_404_NOT_FOUND)
-            toggledata = func(request, musicid)
-            serializer = MusicSerializer(instance=user, data=toggledata, partial=True)
+            toggledata = func(instance, request, musicid)
+            serializer = MusicSerializer(instance=music, data=toggledata, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
