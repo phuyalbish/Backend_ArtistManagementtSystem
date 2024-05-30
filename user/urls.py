@@ -5,6 +5,7 @@ from user.views.create import CreateUser
 from user.views.edit import EditUser
 from user.views.delete import DeleteUser
 from user.views.recover import RecoverUser
+from user.views.get import GetUser
 
 
 urlpatterns = [
@@ -14,5 +15,5 @@ urlpatterns = [
     path('user/edit/<int:userid>/', EditUser.as_view(), name="edit_user"),
     path('user/delete/<int:userid>/', DeleteUser.as_view(), name="delete_user"),
     path('user/recover/<int:userid>/', RecoverUser.as_view(), name="recover_user"),
-      path('login/', Login.as_view(),name='login'),
+    path('login/', Login.as_view(),name='login'),
 ]
