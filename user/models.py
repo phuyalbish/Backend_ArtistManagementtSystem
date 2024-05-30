@@ -21,7 +21,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(null=True)
     gender = models.IntegerField(choices=GENDER, default=0)
     country = models.CharField(max_length=50, null=True)
-    img_profile = models.ImageField(upload_to='uploads/user/')
+    img_profile = models.ImageField(upload_to='uploads/user/', null=True)
     is_artist = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -33,7 +33,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
     modified_by = models.IntegerField(null=True)
 
     objects = UserManager()
-
 
     USERNAME_FIELD = 'email'
 
