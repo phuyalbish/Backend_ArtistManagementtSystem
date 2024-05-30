@@ -6,3 +6,4 @@ class DeleteUser(APIView):
     @EnableDisableDecorator()
     def delete(self, request, userid):
         return {"is_deleted": True}
+
