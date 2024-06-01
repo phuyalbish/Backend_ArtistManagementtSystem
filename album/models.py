@@ -4,10 +4,10 @@ from user.models import Users
 from band.models  import Band
 class Album(models.Model):
     name = models.CharField(max_length=50, null=False)
-    description =  models.CharField(max_length=50, null=True)
+    description =  models.CharField(max_length=50, null=False)
     img_banner = models.ImageField(upload_to='uploads/album/', null=True)
     img_profile = models.ImageField(upload_to='uploads/album/', null=True)
-    artist = models.ForeignKey(Users, default="Anonymous", on_delete=models.SET_DEFAULT)
+    artist = models.ForeignKey(Users, on_delete=models.CASCADE)
     band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(default=timezone.now)
     release_at = models.DateTimeField(default=timezone.now)

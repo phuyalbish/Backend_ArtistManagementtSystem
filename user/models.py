@@ -48,7 +48,11 @@ class Artist(models.Model):
     img_cover = models.ImageField(upload_to='uploads/user/', null=True)
     totallike = models.IntegerField(default=0)
     totalmusic = models.IntegerField(default=0)
-    band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
+    # band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     totalfollower = models.IntegerField(default=0)
     modified_by = models.CharField(max_length=50, null=True)
 
+    objects = UserManager()
+
+    def __str__(self):  
+        return self.stagename
