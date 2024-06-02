@@ -1,10 +1,18 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+<<<<<<< HEAD
 from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer
+=======
+from music.serializers import MusicSerializer
+from music.models import Music
+from rest_framework.permissions import IsAuthenticated
+from core.permissions import IsArtist,IsBand
+>>>>>>> 1b4e5c6 (add permission for album, music, and user)
 
 
 class CreateMusic(APIView):
+    permission_classes = [IsAuthenticated & (IsArtist | IsBand)]
     def post(self, request):
         serializer = MusicSerializer(data=request.data)
         if serializer.is_valid():

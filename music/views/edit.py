@@ -1,10 +1,19 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+<<<<<<< HEAD
 from music.serializers import MusicSerializer, CommentSerializer
 from music.models import Music, Comment
+=======
+from music.serializers import MusicSerializer
+from music.models import Music
+from rest_framework.permissions import IsAuthenticated
+from core.permissions import IsArtist, IsBand, IsOwner
+
+>>>>>>> 1b4e5c6 (add permission for album, music, and user)
 
 class EditMusic(APIView):
+    permission_classes = [IsAuthenticated & (IsArtist | IsBand) & IsOwner]
     def patch(self, request, musicid):
         try:
             user = Music.objects.get(id=musicid)

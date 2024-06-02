@@ -11,11 +11,13 @@ class Album(models.Model):
     band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(default=timezone.now)
     release_at = models.DateTimeField(default=timezone.now)
+    totallike = models.IntegerField(default=0)
+    totalmusic = models.IntegerField(default=0)
     is_hidden = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_released = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
-    modified_by = models.IntegerField(null=True)
+    modified_by = models.CharField(max_length=50, null=True)
 
 
 

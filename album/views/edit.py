@@ -2,9 +2,12 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from album.serializers import AlbumSerializer
+from rest_framework.permissions import IsAuthenticated
+from core.permissions import  IsArtist, IsBand, IsOwner
 from album.models import Album
 
 class EditAlbum(APIView):
+    permission_classes = [IsAuthenticated & (IsArtist | IsBand & IsOwner)]
     def patch(self, request, albumid):
         try:
             user = Album.objects.get(id=albumid)
