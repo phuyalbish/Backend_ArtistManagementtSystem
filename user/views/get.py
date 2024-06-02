@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from user.serializers import UserSerializer,ArtistSerializer
-from user.models import Users,Artist
+from user.serializers import UserSerializer
+from user.models import Users
 from rest_framework.permissions import AllowAny
 
 
@@ -18,8 +18,8 @@ class GetUser(APIView):
 class GetArtist(APIView):
     def get(self, request):
         try:
-            datas = Artist.objects.filter(user__is_deleted=False,user__is_superuser=False)
-            artist_serializer = ArtistSerializer(datas, many=True)
+            datas = Users.objects.filter(is_deleted=False, is_artist=True, is_superuser=False)
+            artist_serializer = Users(datas, many=True)
         except:
             return Response({"detail":"No Artist Found"}, status=404)
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
@@ -36,10 +36,10 @@ class GetUserSpecific(APIView):
 class GetArtistSpecific(APIView):
     def get(self, request, artistid):
         try:
-            data = Artist.objects.get(pk=artistid, user__is_deleted=False)
-            serializer = ArtistSerializer(data, many=False)
+            data = Users.objects.get(pk=artistid, is_artist=True, user__is_deleted=False)
+            serializer = Users(data, many=False)
         except:
-            return Response({"detail":"No User Found"}, status=404)
+            return Response({"detail":"No Artist Found"}, status=404)
         return Response(serializer.data)
         
     

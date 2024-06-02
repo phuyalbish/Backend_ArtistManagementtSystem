@@ -2,8 +2,8 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from music.serializers import MusicSerializer
-from music.models import Music
+from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer
+from music.models import Music, Like, Comment
 
 
 class GetMusic(APIView):
@@ -24,4 +24,24 @@ class GetMusicSpecific(APIView):
             serializer = MusicSerializer(data, many=False)
         except:
             return Response({"detail":"No Music Found"}, status=404)
+        return Response(serializer.data)
+    
+class GetLike(APIView):
+    def get(self, request, musicid):
+        try:
+            data = Like.objects.get(music=musicid)
+            serializer = LikeSerializer(data, many=False)
+        except:
+            return Response({"detail":"No Likes Yet"}, status=404)
+        return Response(serializer.data)
+    
+
+    
+class GetComment(APIView):
+    def get(self, request, musicid):
+        try:
+            data = Comment.objects.filter(music=musicid)
+            serializer = CommentSerializer(data, many=True)
+        except:
+            return Response({"detail":"No Comments Yet"}, status=404)
         return Response(serializer.data)

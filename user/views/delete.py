@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from user.views.decoraor import EnableDisableDecorator
+from user.views.decorator import EnableDisableDecorator
 
 
 class DeleteUser(APIView):
