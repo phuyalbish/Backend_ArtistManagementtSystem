@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class DeleteUser(APIView):
-    permission_classes = [IsAuthenticated & (IsOwner | IsStaff | IsSuperuser)]
+    permission_classes = [IsAuthenticated]
     @EnableDisableDecorator()
     def delete(self, request, userid):
         return {"is_deleted": True}

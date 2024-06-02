@@ -12,7 +12,8 @@ class EnableDisableDecorator:
                 user = Users.objects.get(id=userid)
             except Users.DoesNotExist:
                 return Response({"msg": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
+            if user != request.user and not request.user.is_staff and not request.user.is_superuser:
+                return Response({"msg": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
             toggledata = func(instance, request, userid)
             serializer = UserSerializer(instance=user, data=toggledata, partial=True)
             if serializer.is_valid():
