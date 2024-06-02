@@ -1,17 +1,13 @@
 from rest_framework.views import APIView
 from music.views.decorator import EnableDisableDecorator
-<<<<<<< HEAD
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from music.models import Like, Comment
 from music.serializers import LikeSerializer
-from rest_framework.permissions import AllowAny
-=======
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from core.permissions import IsStaff, IsSuperuser
 
->>>>>>> 1b4e5c6 (add permission for album, music, and user)
 
 class DeleteMusic(APIView):
     permission_classes = [IsAuthenticated & (IsStaff | IsSuperuser)]
