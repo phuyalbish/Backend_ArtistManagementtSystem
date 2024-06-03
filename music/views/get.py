@@ -2,14 +2,9 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-<<<<<<< HEAD
 from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer
 from music.models import Music, Like, Comment
-=======
-from music.serializers import MusicSerializer
-from music.models import Music
 from rest_framework.permissions import AllowAny
->>>>>>> 1b4e5c6 (add permission for album, music, and user)
 
 
 class GetMusic(APIView):

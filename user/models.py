@@ -5,7 +5,6 @@ from django.db import models
 from .manager import UserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
-
 class Users(AbstractBaseUser, PermissionsMixin):
     GENDER = (
         (0, 'Male'),

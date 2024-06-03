@@ -28,26 +28,14 @@ class EditMusic(APIView):
 class EditComment(APIView):
     def patch(self, request, commentid):
         try:
-            user = Comment.objects.get(id=commentid)
+            comment = Comment.objects.get(id=commentid)
         except Comment.DoesNotExist:
             return Response({"msg": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CommentSerializer(instance=user, data=request.data, partial=True)
+        serializer = CommentSerializer(instance=comment, data=request.data, partial=True)
         if serializer.is_valid():
-            if request.user == user.artist or (user.band and request.user in user.band.members.all()):
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({"error": "You don't have permission to update this song."}, status=status.HTTP_403_FORBIDDEN)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class EditComment(APIView):
-    def patch(self, request, commentid):
-        try:
-            user = Comment.objects.get(id=commentid)
-        except Comment.DoesNotExist:
-            return Response({"msg": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CommentSerializer(instance=user, data=request.data, partial=True)
-        if serializer.is_valid():
+            if comment.user != request.user:
+                raise PermissionDenied("You are not the owner of this comment.")
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
