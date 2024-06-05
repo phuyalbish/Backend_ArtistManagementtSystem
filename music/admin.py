@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models import Music, Like, Comment
 
-# Register your models here.
+admin.site.register(Music, Like, Comment)

@@ -9,8 +9,7 @@ class Band(models.Model):
     profile_img = models.ImageField(upload_to='uploads/band/', null=True)
     banner_img = models.ImageField(upload_to='uploads/band', null=True)
     modified_by = models.IntegerField( null=True)
-
-
+    
 class BandMember(models.Model):
     band =  models.ForeignKey(Band, on_delete=models.CASCADE, related_name='members',)
     artist =  models.OneToOneField(Users, on_delete=models.CASCADE)
