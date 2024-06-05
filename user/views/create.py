@@ -11,9 +11,11 @@ class CreateUser(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        if not request.user.is_superuser and serializer.data["is_staff"]:
-            raise PermissionDenied("You do not have permission to perform this action.")
+
         if serializer.is_valid():
+            validated_data = serializer.validated_data
+            if not request.user.is_superuser and validated_data.get("is_staff"):
+                raise PermissionDenied("You do not have permission to perform this action.")
             serializer.save()
             return Response(serializer.data)
         else:

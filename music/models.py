@@ -7,9 +7,10 @@ from user.models import Users
 
 class Music(models.Model):
     name = models.CharField(max_length=50, null=False)
-    description =  models.CharField(max_length=150, null=False)
-    img_profile = models.ImageField(upload_to='uploads/music/', null=True)
+    description =  models.TextField(null=False)
+    img_profile = models.ImageField(upload_to='uploads/music/image/', null=True)
     language = models.CharField(max_length=50, null=True)
+    lyrics= models.TextField(null=True)
     genre = models.ForeignKey(Genre, null=True, on_delete=models.SET_NULL)
     album = models.ForeignKey(Album, null=True, on_delete=models.SET_NULL)
     artist = models.ForeignKey(Users, on_delete=models.CASCADE)
@@ -28,7 +29,7 @@ class Like(models.Model):
     music = models.ForeignKey(Music, on_delete=models.CASCADE)
 
 class Comment(models.Model):
-    body =  models.CharField(max_length=150, null=False)
+    body =  models.TextField(null=False)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     music = models.ForeignKey(Music, on_delete=models.CASCADE)
 

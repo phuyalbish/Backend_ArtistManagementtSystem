@@ -10,7 +10,9 @@ from rest_framework.permissions import IsAuthenticated
 class CreateAlbum(APIView):
     permission_classes = [IsAuthenticated & (IsArtist | IsBand)]
     def post(self, request):
-        serializer = AlbumSerializer(data=request.data)
+        data = request.data
+        data['artist'] = request.user.id
+        serializer = AlbumSerializer(data=data)
         if serializer.is_valid():
             if request.user != serializer.validated_data.get('artist'):
                 return Response({"error": "You are not authorized to create an album for this artist or band."},

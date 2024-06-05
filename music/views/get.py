@@ -29,6 +29,16 @@ class GetMusicSpecific(APIView):
             return Response({"detail":"No Music Found"}, status=404)
         return Response(serializer.data)
     
+class GetAlbumMusicSpecific(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, albumid):
+        try:
+            data = Music.objects.get(album=albumid, is_deleted=False)
+            serializer = MusicSerializer(data, many=False)
+        except:
+            return Response({"detail":"No Music in Album"}, status=404)
+        return Response(serializer.data)
+
 class GetLike(APIView):
     def get(self, request, musicid):
         try:

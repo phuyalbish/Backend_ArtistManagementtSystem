@@ -4,7 +4,7 @@ from user.models import Users
 from band.models  import Band
 class Album(models.Model):
     name = models.CharField(max_length=50, null=False)
-    description =  models.CharField(max_length=150, null=False)
+    description =  models.TextField( null=False)
     img_banner = models.ImageField(upload_to='uploads/album/', null=True)
     img_profile = models.ImageField(upload_to='uploads/album/', null=True)
     artist = models.ForeignKey(Users, on_delete=models.CASCADE)
