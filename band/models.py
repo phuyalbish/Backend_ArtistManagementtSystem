@@ -8,7 +8,8 @@ class Band(models.Model):
     is_disabled = models.BooleanField(default=False)
     profile_img = models.ImageField(upload_to='uploads/band/', null=True)
     banner_img = models.ImageField(upload_to='uploads/band', null=True)
-    modified_by = models.IntegerField(null=True)
+
+    modified_by = models.IntegerField( null=True)
 
 
 class BandMember(models.Model):
