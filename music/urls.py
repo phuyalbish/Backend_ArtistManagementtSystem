@@ -1,6 +1,6 @@
 from django.urls import path
 from music.views.get import GetMusic, GetLike, GetComment
-from music.views.get import GetMusicSpecific
+from music.views.get import GetMusicSpecific,GetAlbumMusicSpecific
 from music.views.create import CreateMusic, CreateLike, CreateComment
 from music.views.edit import EditMusic, EditComment
 from music.views.delete import DeleteMusic, DeleteComment, DeleteLike
@@ -14,6 +14,7 @@ urlpatterns = [
     path('music/get/like/<int:musicid>/', GetLike.as_view(), name="get_like"),
     path('music/get/comment/<int:musicid>/', GetComment.as_view(), name="get_comment"),
     path('music/get/<int:musicid>/', GetMusicSpecific.as_view(), name="get_music_specific"),
+    path('music/get/album/<int:albumid>/', GetAlbumMusicSpecific.as_view(), name="get_album_music_specific"),
 
     path('music/post/', CreateMusic.as_view(), name="post_music"),
     path('music/like/', CreateLike.as_view(), name="like_music"),

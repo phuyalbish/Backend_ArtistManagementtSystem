@@ -3,8 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from genre.serializers import GenreSerializer
 from genre.models import Genre
+from rest_framework.permissions import IsAuthenticated
+from core.permissions import IsStaff, IsSuperuser
 
 class EditGenre(APIView):
+    permission_classes = [IsAuthenticated & (IsStaff | IsSuperuser)]
     def patch(self, request, genreid):
         try:
             user = Genre.objects.get(id=genreid)
