@@ -6,8 +6,10 @@ from album.models import Album
 
 
 class CreateAlbum(APIView):
-    def post(self, request):
-        serializer = AlbumSerializer(data=request.data)
+     def post(self, request):
+        data= request.data
+        data['artist']=request.user.id
+        serializer = AlbumSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
