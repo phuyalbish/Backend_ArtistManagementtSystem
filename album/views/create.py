@@ -12,6 +12,7 @@ class CreateAlbum(APIView):
     def post(self, request):
         data = request.data
         data['artist'] = request.user.id
+
         serializer = AlbumSerializer(data=data)
         if serializer.is_valid():
             if request.user != serializer.validated_data.get('artist'):
