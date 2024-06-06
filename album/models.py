@@ -4,7 +4,7 @@ from user.models import Users
 from band.models  import Band
 class Album(models.Model):
     name = models.CharField(max_length=50, null=False)
-    description =  models.CharField(max_length=50, null=False)
+    description =  models.TextField( null=False)
     img_banner = models.ImageField(upload_to='uploads/album/', null=True)
     img_profile = models.ImageField(upload_to='uploads/album/', null=True)
     artist = models.ForeignKey(Users, on_delete=models.CASCADE)
@@ -13,10 +13,10 @@ class Album(models.Model):
     release_at = models.DateTimeField(default=timezone.now)
     totallike = models.IntegerField(default=0)
     totalmusic = models.IntegerField(default=0)
-    is_hidden = models.BooleanField(default=0)
-    is_deleted = models.BooleanField(default=0)
-    is_released = models.BooleanField(default=0)
-    is_disabled = models.BooleanField(default=0)
+    is_hidden = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+    is_released = models.BooleanField(default=False)
+    is_disabled = models.BooleanField(default=False)
     modified_by = models.CharField(max_length=50, null=True)
 
 

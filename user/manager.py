@@ -54,7 +54,6 @@ class UserManager(BaseUserManager):
     def create_artist(self, email, password=None, **other_fields):
         other_fields.setdefault("is_artist", True)
         other_fields.setdefault("is_active", True)
-
         return self.create_user(email, password, **other_fields)
     
     def getArtist(self):

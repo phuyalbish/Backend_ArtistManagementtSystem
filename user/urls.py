@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.login import Login
+from user.views.login import Login
 from user.views.get import GetUserSpecific
 from user.views.create import CreateUser
 from user.views.edit import EditUser
@@ -8,8 +8,8 @@ from user.views.recover import RecoverUser
 from user.views.get import GetUser
 from user.views.get import GetArtist
 from user.views.get import GetArtistSpecific
-from user.views.create import CreateArtist
-from user.views.edit import EditArtist
+from user.views.enable import EnableUser
+from user.views.disable import DisableUser
 
 
 
@@ -24,6 +24,6 @@ urlpatterns = [
     path('login/', Login.as_view(),name='login'),
     path('artist/get/', GetArtist.as_view(), name="get_artist"),
     path('artist/get/<int:artistid>/', GetArtistSpecific.as_view(), name="get_artist_specific"),
-    path('artist/post/', CreateArtist.as_view(), name="post_artist"),
-    path('artist/edit/<int:artistid>/', EditArtist.as_view(), name="edit_artist"),
+    path('user/disable/<int:userid>/', DisableUser.as_view(), name="disable_user"),
+    path('user/enable/<int:userid>/', EnableUser.as_view(), name="enable_user"),
 ]
