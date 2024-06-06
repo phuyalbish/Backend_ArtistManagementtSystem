@@ -1,3 +1,9 @@
 .venv
 __pycache__
 db.sqlite3
+*/migrations/*
+!*/migrations/__init__.py
+media/uploads/user/*
+media/uploads/music/*
+!media/uploads/music/image
+media/uploads/music/image/*
