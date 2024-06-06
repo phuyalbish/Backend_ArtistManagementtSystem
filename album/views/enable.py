@@ -9,4 +9,7 @@ class EnableAlbum(APIView):
     @EnableDisableDecorator()
     def delete(self, request, albumid):
        
-        return {"is_disabled": False}
+        return {
+            "modified_by" :request.user.id ,
+            "is_disabled": False
+        }
