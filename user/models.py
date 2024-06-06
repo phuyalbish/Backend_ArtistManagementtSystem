@@ -5,7 +5,6 @@ from django.db import models
 from .manager import UserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
-
 class Users(AbstractBaseUser, PermissionsMixin):
     GENDER = (
         (0, 'Male'),
@@ -17,7 +16,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     firstname = models.CharField(max_length=50, null=True)
     lastname = models.CharField(max_length=50, null=True)
     dob = models.DateField(null=True)
-    bio = models.CharField(max_length=150, null=True)
+    bio = models.CharField(max_length=200, null=True)
     gender = models.IntegerField(choices=GENDER, default=0)
     country = models.CharField(max_length=50, null=True)
     img_profile = models.ImageField(upload_to='uploads/user/', null=True)
@@ -39,5 +38,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):  
         return self.email
+    
+
     
 

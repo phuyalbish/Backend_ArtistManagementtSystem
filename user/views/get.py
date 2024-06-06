@@ -3,10 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from user.serializers import UserSerializer
 from user.models import Users
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
+
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
 
 class GetUser(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         try:
             datas = Users.objects.filter(is_deleted=False, is_superuser=False)
@@ -16,6 +18,7 @@ class GetUser(APIView):
         return Response(serializer.data)
 
 class GetArtist(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         try:
             datas = Users.objects.filter(is_deleted=False, is_artist=True, is_superuser=False)
@@ -25,6 +28,7 @@ class GetArtist(APIView):
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
 
 class GetUserSpecific(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, userid):
         try:
             data = Users.objects.get(pk=userid, is_deleted=False)
@@ -34,6 +38,7 @@ class GetUserSpecific(APIView):
         return Response(serializer.data)
 
 class GetArtistSpecific(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, artistid):
         try:
             data = Users.objects.get(pk=artistid, is_artist=True, user__is_deleted=False)

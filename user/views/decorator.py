@@ -1,5 +1,3 @@
-
-
 from rest_framework.response import Response
 from rest_framework import status
 from user.models import Users
@@ -12,7 +10,6 @@ class EnableDisableDecorator:
                 user = Users.objects.get(id=userid)
             except Users.DoesNotExist:
                 return Response({"msg": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
             toggledata = func(instance, request, userid)
             serializer = UserSerializer(instance=user, data=toggledata, partial=True)
             if serializer.is_valid():

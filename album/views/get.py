@@ -4,9 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from album.serializers import AlbumSerializer
 from album.models import Album
+from rest_framework.permissions import AllowAny
 
 
 class GetAlbum(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         try:
             datas = list(Album.objects.filter(is_deleted=False))
@@ -18,6 +20,7 @@ class GetAlbum(APIView):
     
 
 class GetAlbumSpecific(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, albumid):
         try:
             data = Album.objects.get(pk=albumid, is_deleted=False)
