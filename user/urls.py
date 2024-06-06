@@ -10,6 +10,7 @@ from user.views.get import GetArtist
 from user.views.get import GetArtistSpecific
 from user.views.enable import EnableUser
 from user.views.disable import DisableUser
+from user.views.get import GetLoggedInUser
 
 
 
@@ -26,4 +27,5 @@ urlpatterns = [
     path('artist/get/<int:artistid>/', GetArtistSpecific.as_view(), name="get_artist_specific"),
     path('user/disable/<int:userid>/', DisableUser.as_view(), name="disable_user"),
     path('user/enable/<int:userid>/', EnableUser.as_view(), name="enable_user"),
+    path('user/login-user/', GetLoggedInUser.as_view(), name='get_login_user_detail'),
 ]
