@@ -47,7 +47,11 @@ class GetArtistSpecific(APIView):
         return Response(serializer.data)
         
     
-    
-    
-    
 
+class GetLoggedInUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
