@@ -6,6 +6,9 @@ from music.views.delete import DeleteMusic, DeleteComment, DeleteLike
 from music.views.recover import RecoverMusic
 from music.views.enable import EnableMusic
 from music.views.disable import DisableMusic
+from music.views.hide import HideMusic
+from music.views.unhide import UnHideMusic
+
 
 
 urlpatterns = [
@@ -25,6 +28,9 @@ urlpatterns = [
 
     path('music/disable/<int:musicid>/', DisableMusic.as_view(), name="disable_music"),
     path('music/enable/<int:musicid>/', EnableMusic.as_view(), name="enable_music"),
+
+    path('music/hide/<int:musicid>/', HideMusic.as_view(), name="disable_music"),
+    path('music/unhide/<int:musicid>/', UnHideMusic.as_view(), name="enable_music"),
 
     path('music/delete/<int:musicid>/', DeleteMusic.as_view(), name="delete_music"),
     path('music/recover/<int:musicid>/', RecoverMusic.as_view(), name="recover_music"),
