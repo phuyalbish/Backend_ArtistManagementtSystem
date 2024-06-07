@@ -15,6 +15,11 @@ class LikeSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'music') 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only = True)
+    class Meta:
+        model = Comment
+        fields =  "__all__"
+class CommentPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields =  "__all__"

@@ -15,6 +15,8 @@ class DeleteMusic(APIView):
     @EnableDisableDecorator()
     def delete(self, request, musicid):
         music = Music.objects.get(id=musicid)
+        print(request.user)
+        print(music.artist)
         if music.artist != request.user:
             raise PermissionDenied("You are not the owner of this music.")
         return {"is_deleted": True}

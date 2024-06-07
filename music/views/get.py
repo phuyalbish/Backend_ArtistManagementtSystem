@@ -77,6 +77,7 @@ class GetLoggedInSpecificMusic(APIView):
         try:    
 
             user = request.user
+            
             data = Music.objects.filter(artist=user.id, is_deleted=False)
             serializer = MusicSerializer(data, many=True)
         except:
