@@ -1,6 +1,6 @@
 from django.urls import path
 from user.views.login import Login
-from user.views.get import GetUserSpecific
+from user.views.get import GetUserSpecific, GetCSRF
 from user.views.create import CreateUser
 from user.views.edit import EditUser
 from user.views.delete import DeleteUser
@@ -16,6 +16,10 @@ from user.views.get import GetLoggedInUser
 
 
 urlpatterns = [
+
+    
+    path('getCSRF/', GetCSRF.as_view(), name="get_csrf"),
+    
     path('user/get/', GetUser.as_view(), name="get_user"),
     path('user/get/<int:userid>/', GetUserSpecific.as_view(), name="get_user_specific"),
     path('user/post/', CreateUser.as_view(), name="post_user"),

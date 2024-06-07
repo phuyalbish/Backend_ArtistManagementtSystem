@@ -1,3 +1,4 @@
+import django
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -55,3 +56,13 @@ class GetLoggedInUser(APIView):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+    
+
+class GetCSRF(APIView):
+    permission_classes = [AllowAny]
+    def getCSRFToken(request):
+        try:
+            token = django.middleware.csrf.get_token(request)
+        except:
+            return Response({'detail':"Token Not Found"}, status=404)
+        return Response({'token': token})

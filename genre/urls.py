@@ -6,7 +6,6 @@ from genre.views.edit import EditGenre
 from genre.views.delete import DeleteGenre
 from genre.views.recover import RecoverGenre
 
-
 urlpatterns = [
     path('genre/get/', GetGenre.as_view(), name="get_genre"),
     path('genre/get/<int:genreid>/', GetGenreSpecific.as_view(), name="get_genre_specific"),
