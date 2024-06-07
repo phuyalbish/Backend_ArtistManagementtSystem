@@ -13,4 +13,7 @@ class EnableUser(APIView):
         user = Users.objects.get(id=userid)
         if request.user.is_staff and user.is_superuser:
             raise PermissionDenied("You do not have permission to perform this action.")
-        return {"is_disabled": False}
+        return {
+            "modified_by" :request.user.id ,
+            "is_disabled": False
+        }
