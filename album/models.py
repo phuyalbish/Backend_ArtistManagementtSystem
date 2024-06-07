@@ -18,5 +18,6 @@ class Album(models.Model):
     is_released = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
     modified_by = models.IntegerField(null=True)
-   
+
+
 
