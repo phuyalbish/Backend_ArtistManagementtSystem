@@ -43,6 +43,7 @@ class GetLoggedInSpecificAlbum(APIView):
 
 
 class GetComment(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, albumid):
         try:
             data = Comment.objects.filter(music=albumid)
@@ -53,7 +54,7 @@ class GetComment(APIView):
     
 
 class GetDeletedAlbum(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             datas = list(Album.objects.filter(is_deleted=True))

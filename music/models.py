@@ -28,26 +28,26 @@ class Music(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='music_like_user')
     is_like = models.BooleanField(default=True)
-    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name='likes')
+    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name='music_likes')
 
 class Comment(models.Model):
     body =  models.TextField(null=False)
     user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='music_comment_user')
-    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name='comments')
+    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name='music_comments')
     created_at = models.DateTimeField(default=timezone.now)
 
 class CommentLike(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE,   related_name='music_comment_like_user')
     is_like = models.BooleanField(default=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='likes')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='music_comment_likes')
 
 class CommentReply(models.Model):
     body = models.TextField(null=False)
     user = models.ForeignKey(Users, on_delete=models.CASCADE,   related_name='music_comment_reply_user')
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='replies')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='music_comment_replies')
     created_at = models.DateTimeField(default=timezone.now)
 
 class CommentReplyLike(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='music_comment_reply_like_user')
     is_like = models.BooleanField(default=True)
-    comment = models.ForeignKey(CommentReply, on_delete=models.CASCADE, related_name='likes')
+    comment = models.ForeignKey(CommentReply, on_delete=models.CASCADE, related_name='music_comment_reply_likes')

@@ -28,7 +28,7 @@ class GetArtist(APIView):
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
 
 class GetUserSpecific(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request, userid):
         try:
             data = Users.objects.get(pk=userid, is_deleted=False)

@@ -51,11 +51,11 @@ class CommentReplySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_total_likes(self, obj):
-        return obj.likes.filter(is_like=True).count()
+        return obj.music_comment_reply_likes.filter(is_like=True).count()
     
     def get_likes(self, obj):
-        likes = obj.likes.filter(is_like=True)
-        return LikeSerializer(likes, many=True, read_only=True).data
+        music_comment_reply_likes = obj.music_comment_reply_likes.filter(is_like=True)
+        return LikeSerializer(music_comment_reply_likes, many=True, read_only=True).data
     
     def create(self, validated_data):
         return CommentReply.objects.create(**validated_data)
@@ -68,21 +68,21 @@ class CommentSerializer(serializers.ModelSerializer):
     total_replies = serializers.SerializerMethodField()
     user = UserSerializer(read_only = True)
     user_id = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all(), write_only=True, source='user')
-    replies = CommentReplySerializer(many=True, read_only=True)
+    music_comment_replies = CommentReplySerializer(many=True, read_only=True)
     likes = serializers.SerializerMethodField()
     class Meta:
         model = Comment
         fields =  "__all__"
     
     def get_total_likes(self, obj):
-        return obj.likes.filter(is_like=True).count()
+        return obj.music_comment_likes.filter(is_like=True).count()
     
     def get_total_replies(self, obj):
-        return obj.replies.count()
+        return obj.music_comment_replies.count()
     
     def get_likes(self, obj):
-        likes = obj.likes.filter(is_like=True)
-        return CommentLikeSerializer(likes, many=True, read_only=True).data
+        music_comment_likes = obj.music_comment_likes.filter(is_like=True)
+        return CommentLikeSerializer(music_comment_likes, many=True, read_only=True).data
     
     def create(self, validated_data):
         return Comment.objects.create(**validated_data)
@@ -100,14 +100,14 @@ class MusicSerializer(serializers.ModelSerializer):
 
 
     def get_total_likes(self, obj):
-        return obj.likes.filter(is_like=True).count()
+        return obj.music_likes.filter(is_like=True).count()
     
     def get_total_comments(self, obj):
-        return obj.comments.count()
+        return obj.music_comments.count()
     
     def get_likes(self, obj):
-        likes = obj.likes.filter(is_like=True)
-        return LikeSerializer(likes, many=True, read_only=True).data
+        music_likes = obj.music_likes.filter(is_like=True)
+        return LikeSerializer(music_likes, many=True, read_only=True).data
 
 
 
