@@ -5,8 +5,8 @@ from band.models  import Band
 class Album(models.Model):
     name = models.CharField(max_length=50, null=False)
     description =  models.TextField( null=False)
-    img_banner = models.ImageField(upload_to='uploads/album/', null=True)
-    img_profile = models.ImageField(upload_to='uploads/album/', null=True)
+    img_cover = models.ImageField(upload_to='uploads/album/cover/', null=True, default='uploads/default/cover.jpeg' )
+    img_profile = models.ImageField(upload_to='uploads/album/profile/', null=True,   default='uploads/default/defaultMusic.jpg' )
     artist = models.ForeignKey(Users, on_delete=models.CASCADE)
     band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(default=timezone.now)

@@ -8,7 +8,8 @@ from user.models import Users
 class Music(models.Model):
     name = models.CharField(max_length=50, null=False)
     description =  models.TextField(null=False)
-    img_profile = models.ImageField(upload_to='uploads/music/image/', null=True)
+    img_cover = models.ImageField(upload_to='uploads/music/cover/', null=True, default='uploads/default/cover.jpeg' )
+    img_profile = models.ImageField(upload_to='uploads/music/profile/', null=True,   default='uploads/default/defaultMusic.jpg' )
     language = models.CharField(max_length=50, null=True)
     lyrics= models.TextField(null=True)
     genre = models.ForeignKey(Genre, null=True, on_delete=models.SET_NULL)

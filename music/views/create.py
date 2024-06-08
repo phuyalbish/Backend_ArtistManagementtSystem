@@ -12,6 +12,7 @@ class CreateMusic(APIView):
     permission_classes = [IsAuthenticated & (IsArtist | IsBand)]
     def post(self, request):
         data = request.data
+        print(request.user.id)
         data['artist'] = request.user.id
         serializer = MusicSerializer(data=data)
         if serializer.is_valid():
