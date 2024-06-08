@@ -18,6 +18,33 @@ class Album(models.Model):
     is_released = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
     modified_by = models.IntegerField(null=True)
-   
+
+
+class Like(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='album_like_user')
+    is_like = models.BooleanField(default=True)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='likes')
+
+class Comment(models.Model):
+    body =  models.TextField(null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='album_comment_user')
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='comments')
+    created_at = models.DateTimeField(default=timezone.now)
+
+class CommentLike(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='album_comment_like_user')
+    is_like = models.BooleanField(default=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='likes')
+
+class CommentReply(models.Model):
+    body = models.TextField(null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='album_comment_reply_user')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='replies')
+    created_at = models.DateTimeField(default=timezone.now)
+
+class CommentReplyLike(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='album_comment_reply_like_user')
+    is_like = models.BooleanField(default=True)
+    comment = models.ForeignKey(CommentReply, on_delete=models.CASCADE, related_name='likes')
 
 
