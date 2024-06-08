@@ -2,9 +2,9 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer
-from music.models import Music, Like, Comment
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer, CommentReplySerializer,CommentLikeSerializer, CommentReplyLikeSerializer
+from music.models import Music, Like, Comment, CommentLike, CommentReply, CommentReplyLike
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
 
 
@@ -18,10 +18,18 @@ class GetMusic(APIView):
             return Response({"detail":"No Music Found"}, status=404)
         return Response(serializer.data)
 
-    
+class GetDeletedMusic(APIView):
+    permission_classes = [AllowAny & IsAuthenticated]
+    def get(self, request):
+        try:
+            datas = list(Music.objects.filter(is_deleted=True))
+            serializer = MusicSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Deleted Music Found"}, status=404)
+        return Response(serializer.data)
 
 class GetMusicSpecific(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated  ]
     def get(self, request, musicid):
         try:
             data = Music.objects.get(pk=musicid, is_deleted=False)
@@ -40,17 +48,7 @@ class GetAlbumMusicSpecific(APIView):
             return Response({"detail":"No Music in Album"}, status=404)
         return Response(serializer.data)
 
-class GetLike(APIView):
-    def get(self, request, musicid):
-        try:
-            data = Like.objects.get(music=musicid)
-            serializer = LikeSerializer(data, many=True)
-        except:
-            return Response({"detail":"No Likes Yet"}, status=404)
-        return Response(serializer.data)
-    
 
-    
 class GetComment(APIView):
     def get(self, request, musicid):
         try:
@@ -59,6 +57,7 @@ class GetComment(APIView):
         except:
             return Response({"detail":"No Comments Yet"}, status=404)
         return Response(serializer.data)
+    
     
 class GetArtistSpecificMusic(APIView):
     permission_classes = [AllowAny]
@@ -83,4 +82,13 @@ class GetLoggedInSpecificMusic(APIView):
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
     
-
+class GetLoggedInSpecificDeletedMusic(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:    
+            user = request.user
+            data = Music.objects.filter(artist=user.id, is_deleted=True)
+            serializer = MusicSerializer(data, many=True)
+        except:
+            return Response({"detail":"No Music in Artist"}, status=404)
+        return Response(serializer.data)
