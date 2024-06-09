@@ -20,5 +20,5 @@ urlpatterns = [
     path('api/', include('album.urls')),
     path('api/', include('genre.urls')),
     path('api/', include('band.urls')),
-    # path('api/', include('comment.urls')),
+    path('api/', include('customizeable.urls')),
 ] + static(settings.MEDIA_URL,  document_root=settings.MEDIA_ROOT)

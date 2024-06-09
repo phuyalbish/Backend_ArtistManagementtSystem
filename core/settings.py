@@ -78,7 +78,8 @@ INSTALLED_APPS = [
     'music',
     'album',
     'genre',
-    'band'
+    'band',
+    'customizeable'
 ]
 
 MIDDLEWARE = [

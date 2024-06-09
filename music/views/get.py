@@ -29,7 +29,7 @@ class GetDeletedMusic(APIView):
         return Response(serializer.data)
 
 class GetMusicSpecific(APIView):
-    permission_classes = [IsAuthenticated  ]
+    permission_classes = [AllowAny]
     def get(self, request, musicid):
         try:
             data = Music.objects.get(pk=musicid, is_deleted=False)
@@ -50,6 +50,7 @@ class GetAlbumMusicSpecific(APIView):
 
 
 class GetComment(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, musicid):
         try:
             data = Comment.objects.filter(music=musicid)
