@@ -55,7 +55,7 @@ class CommentReplySerializer(serializers.ModelSerializer):
     
     def get_likes(self, obj):
         music_comment_reply_likes = obj.music_comment_reply_likes.filter(is_like=True)
-        return LikeSerializer(music_comment_reply_likes, many=True, read_only=True).data
+        return CommentReplyLikeSerializer(music_comment_reply_likes, many=True, read_only=True).data
     
     def create(self, validated_data):
         return CommentReply.objects.create(**validated_data)
