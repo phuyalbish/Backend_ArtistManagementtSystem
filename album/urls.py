@@ -16,12 +16,9 @@ urlpatterns = [
     path('album/get/<int:albumid>/', GetAlbumSpecific.as_view(), name="get_album_specific"),
     path('album/get/deleted/', GetDeletedAlbum.as_view(), name="get_deleted_music"),
     path('album/get/loggedin/deleted/', GetLoggedInSpecificDeletedAlbum.as_view(), name="get_music_loggedIn"),
-
-
     path('album/post/', CreateAlbum.as_view(), name="post_album"),
     path('album/comment/', CreateComment.as_view(), name="comment_album"),
     path('album/comment/reply/', CreateCommentReply.as_view(), name="reply_comment"),
-
     path('album/edit/<int:albumid>/', EditAlbum.as_view(), name="edit_album"),
     path('album/delete/<int:albumid>/', DeleteAlbum.as_view(), name="delete_album"),
     path('album/recover/<int:albumid>/', RecoverAlbum.as_view(), name="recover_album"),

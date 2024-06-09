@@ -55,7 +55,7 @@ class CommentReplySerializer(serializers.ModelSerializer):
     
     def get_likes(self, obj):
         music_comment_reply_likes = obj.music_comment_reply_likes.filter(is_like=True)
-        return LikeSerializer(music_comment_reply_likes, many=True, read_only=True).data
+        return CommentReplyLikeSerializer(music_comment_reply_likes, many=True, read_only=True).data
     
     def create(self, validated_data):
         return CommentReply.objects.create(**validated_data)
@@ -89,28 +89,32 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class MusicSerializer(serializers.ModelSerializer):
-    
     total_likes = serializers.SerializerMethodField()
     total_comments = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
-
+    album_name = serializers.SerializerMethodField()
+    artist_name = serializers.SerializerMethodField()
+    
     class Meta:
         model = Music
         fields = "__all__"
 
-
     def get_total_likes(self, obj):
         return obj.music_likes.filter(is_like=True).count()
-    
+
     def get_total_comments(self, obj):
         return obj.music_comments.count()
-    
+
     def get_likes(self, obj):
         music_likes = obj.music_likes.filter(is_like=True)
         return LikeSerializer(music_likes, many=True, read_only=True).data
 
+    def get_album_name(self, obj):
+        return obj.album.name if obj.album else None
 
-
+    def get_artist_name(self, obj):
+        return obj.artist.firstname if obj.artist else None
+    
 
 
 

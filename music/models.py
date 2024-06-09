@@ -6,6 +6,7 @@ from band.models import Band
 from user.models import Users
 
 class Music(models.Model):
+    
     name = models.CharField(max_length=50, null=False)
     description =  models.TextField(null=False)
     img_cover = models.ImageField(upload_to='uploads/music/cover/', null=True, default='uploads/default/cover.jpeg' )
