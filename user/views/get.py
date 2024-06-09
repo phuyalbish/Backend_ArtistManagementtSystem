@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from user.serializers import UserSerializer
 from user.models import Users
 from rest_framework.permissions import AllowAny, IsAuthenticated
-
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 
 class GetUser(APIView):
     permission_classes = [AllowAny]
@@ -56,6 +57,47 @@ class GetLoggedInUser(APIView):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
+class CountryListView(APIView):
+    def get(self, request, *args, **kwargs):
+        countries = [country[0] for country in Users.ASIAN_COUNTRIES]
+        return Response({'countries': countries})
+
+class ArtistCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_artists = Users.objects.filter(is_artist=True).count()
+        return Response({'total_artists': total_artists})
+
+class UserCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_users = Users.objects.count()
+        return Response({'total_users': total_users})
+
+
+
+class CountryDataAPIView(APIView):
+    def get(self, request):
+        # Retrieve country data from the Users model
+        country_data = Users.objects.values('country').annotate(count=Count('id'))
+
+        # Format the data for the response
+        formatted_data = [{'country': item['country'], 'count': item['count']} for item in country_data]
+
+        return Response(formatted_data, status=status.HTTP_200_OK)
+
+
+class UserCreationStats(APIView):
+    def get(self, request, *args, **kwargs):
+        data = Users.objects.annotate(date=TruncDate('created_at')).values('date').annotate(count=Count('id')).order_by('date')
+
+        response_data = {
+            'dates': [entry['date'] for entry in data],
+            'counts': [entry['count'] for entry in data]
+        }
+
+        return Response(response_data)
+
     
 
 class GetCSRF(APIView):
@@ -91,3 +133,4 @@ class GetDeletedArtist(APIView):
         except:
             return Response({"detail":"No Artist Found"}, status=404)
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
+

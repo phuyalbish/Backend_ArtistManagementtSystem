@@ -1,6 +1,8 @@
 from django.urls import path
-from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetLoggedInSpecificDeletedMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre
+
+from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetLoggedInSpecificDeletedMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView
 from music.views.create import CreateMusic, CreateComment, CreateCommentReply, ToggleMusicLike, ToggleCommentLike, ToggleCommentReplyLike
+
 from music.views.edit import EditMusic, EditComment
 from music.views.delete import DeleteMusic, DeleteComment, DeleteCommentReply
 from music.views.recover import RecoverMusic
@@ -47,6 +49,11 @@ urlpatterns = [
     path('music/delete/<int:musicid>/', DeleteMusic.as_view(), name="delete_music"),
     path('music/recover/<int:musicid>/', RecoverMusic.as_view(), name="recover_music"),
     path('music/delete/comment/<int:commentid>/', DeleteComment.as_view(), name="delete_comment"),
+
+    path('music/artist/get/<int:artistid>/', GetArtistSpecificMusic.as_view(), name="get_artist_music"),
+     path('music/music-count/', MusicCountView.as_view(), name='music-count'),
+
     path('music/delete/comment/reply/<int:commentid>/', DeleteCommentReply.as_view(), name="delete_comment_reply"),
     path('music/artist/get/<int:artistid>/', GetArtistSpecificMusic.as_view(), name="get_artist_music")
+
 ]

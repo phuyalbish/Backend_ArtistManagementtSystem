@@ -12,7 +12,7 @@ class GetMusic(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = list(Music.objects.filter(is_deleted=False))
+            datas = list(Music.objects.filter(is_deleted=False,is_hidden=False))
             serializer = MusicSerializer(datas, many=True)
         except:
             return Response({"detail":"No Music Found"}, status=404)
@@ -110,6 +110,11 @@ class GetMusicFromGenreWeather(APIView):
         return Response(serialized_music)
     
 
+class MusicCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_music = Music.objects.count()
+        return Response({'total_music': total_music})
+
 class GetMusicFromGenre(APIView):
     permission_classes = [AllowAny]
     def get(self, request, genreid):
@@ -123,3 +128,4 @@ class GetAllMusicWithGenre(APIView):
         music_with_genre = Music.objects.exclude(genre=None)
         serializer = MusicSerializer(music_with_genre, many=True)
         return Response(serializer.data)
+
