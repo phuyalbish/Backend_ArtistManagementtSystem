@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer, CommentReplySerializer,CommentLikeSerializer, CommentReplyLikeSerializer
 from music.models import Music, Like, Comment, CommentLike, CommentReply, CommentReplyLike
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
-
-
+from genre.models import Genre
+import random
 
 class GetMusic(APIView):
     permission_classes = [AllowAny]
@@ -92,4 +92,34 @@ class GetLoggedInSpecificDeletedMusic(APIView):
             serializer = MusicSerializer(data, many=True)
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
+        return Response(serializer.data)
+    
+class GetMusicFromGenreWeather(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, weathername):
+        try:
+            genres = Genre.objects.filter(weather=weathername)
+        except Genre.DoesNotExist:
+            return Response({"error": "Weather not found"}, status=404)
+        music_from_weather = Music.objects.filter(genre__in=genres)
+        music_list = list(music_from_weather)
+        random.shuffle(music_list)
+        music_list = music_list[:5]
+        serializer = MusicSerializer(music_list, many=True)
+        serialized_music = serializer.data
+        return Response(serialized_music)
+    
+
+class GetMusicFromGenre(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, genreid):
+        music_from_weather = Music.objects.filter(genre=genreid)
+        serializer = MusicSerializer(music_from_weather, many=True)
+        serialized_music = serializer.data
+        return Response(serialized_music)
+    
+class GetAllMusicWithGenre(APIView):
+    def get(self, request):
+        music_with_genre = Music.objects.exclude(genre=None)
+        serializer = MusicSerializer(music_with_genre, many=True)
         return Response(serializer.data)
