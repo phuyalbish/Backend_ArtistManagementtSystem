@@ -96,7 +96,7 @@ class AlbumSerializer(serializers.ModelSerializer):
     total_likes = serializers.SerializerMethodField()
     total_comments = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
-
+    artist_name = serializers.SerializerMethodField()
     class Meta:
         model = Album
         fields = "__all__"
@@ -111,3 +111,7 @@ class AlbumSerializer(serializers.ModelSerializer):
     def get_likes(self, obj):
         likes = obj.likes.filter(is_like=True)
         return LikeSerializer(likes, many=True, read_only=True).data
+    
+    def get_artist_name(self, obj):
+        return obj.artist.firstname if obj.artist else None
+    
