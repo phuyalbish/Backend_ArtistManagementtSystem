@@ -70,7 +70,8 @@ class Users(AbstractBaseUser, PermissionsMixin):
     bio = models.CharField(max_length=200, null=True)
     gender = models.IntegerField(choices=GENDER, default=0)
     country = models.CharField(max_length=50, choices=ASIAN_COUNTRIES, null=True)
-    img_profile = models.ImageField(upload_to='uploads/user/', null=True)
+    img_cover = models.ImageField(upload_to='uploads/user/cover/', null=True, default='uploads/default/cover.jpeg' )
+    img_profile = models.ImageField(upload_to='uploads/user/profile/', null=True,   default='uploads/default/defaultUser.jpg' )
     is_artist = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -80,12 +81,11 @@ class Users(AbstractBaseUser, PermissionsMixin):
     created_by = models.IntegerField(null=True)
     created_at = models.DateTimeField(default=timezone.now)
     modified_by = models.IntegerField(null=True)
-    img_cover = models.ImageField(upload_to='uploads/user/', null=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
 
-    REQUIRED_FIELD = []
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):  
         return self.email

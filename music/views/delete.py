@@ -3,8 +3,7 @@ from music.views.decorator import EnableDisableDecorator
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from music.models import Like, Comment,Music
-from music.serializers import LikeSerializer
+from music.models import Comment,Music, CommentReply
 from rest_framework.permissions import IsAuthenticated
 from core.permissions import IsArtist,IsNormalUser,IsBand
 from rest_framework.exceptions import PermissionDenied
@@ -19,19 +18,6 @@ class DeleteMusic(APIView):
             raise PermissionDenied("You are not the owner of this music.")
         return {"is_deleted": True}
     
-
-
-class DeleteLike(APIView):
-     permission_classes = [IsAuthenticated & (IsArtist | IsNormalUser)]
-     def delete(self, request, likeid):
-        try:
-            like = Like.objects.get(id=likeid)
-        except Like.DoesNotExist:
-            return Response({"detail": "Like not found"}, status=status.HTTP_404_NOT_FOUND)
-        if like.user != request.user:
-            raise PermissionDenied("You are not the owner of this like.")
-        like.delete()
-        return Response({"detail":"Unliked"}, status=status.HTTP_204_NO_CONTENT)
      
 class DeleteComment(APIView):
      permission_classes = [IsAuthenticated & (IsArtist | IsNormalUser)]
@@ -44,3 +30,16 @@ class DeleteComment(APIView):
             raise PermissionDenied("You are not the owner of this comment.")
         comment.delete()
         return Response({"detail":"Comment Deleted"}, status=status.HTTP_204_NO_CONTENT)
+     
+     
+class DeleteCommentReply(APIView):
+     permission_classes = [IsAuthenticated & (IsArtist | IsNormalUser)]
+     def delete(self, request, commentid):
+        try:
+            comment = CommentReply.objects.get(id=commentid)
+        except CommentReply.DoesNotExist:
+            return Response({"detail": "Reply not found"}, status=status.HTTP_404_NOT_FOUND)
+        if comment.user != request.user:
+            raise PermissionDenied("You are not the owner of this reply.")
+        comment.delete()
+        return Response({"detail":"Reply Deleted"}, status=status.HTTP_204_NO_CONTENT)

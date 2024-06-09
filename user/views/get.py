@@ -1,3 +1,4 @@
+import django
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,7 +12,7 @@ class GetUser(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = Users.objects.filter(is_deleted=False, is_superuser=False)
+            datas = Users.objects.filter(is_deleted=False, is_artist=False, is_superuser=False)
             serializer = UserSerializer(datas, many=True)
         except:
             return Response({"detail":"No User Found"}, status=404)
@@ -28,7 +29,7 @@ class GetArtist(APIView):
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
 
 class GetUserSpecific(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request, userid):
         try:
             data = Users.objects.get(pk=userid, is_deleted=False)
@@ -41,7 +42,7 @@ class GetArtistSpecific(APIView):
     permission_classes = [AllowAny]
     def get(self, request, artistid):
         try:
-            data = Users.objects.get(pk=artistid, is_artist=True, user__is_deleted=False)
+            data = Users.objects.get(pk=artistid, is_artist=True, is_deleted=False)
             serializer = Users(data, many=False)
         except:
             return Response({"detail":"No Artist Found"}, status=404)
@@ -96,3 +97,40 @@ class UserCreationStats(APIView):
         }
 
         return Response(response_data)
+
+    
+
+class GetCSRF(APIView):
+    permission_classes = [AllowAny]
+    def getCSRFToken(request):
+        try:
+            token = django.middleware.csrf.get_token(request)
+        except:
+            return Response({'detail':"Token Not Found"}, status=404)
+        return Response({'token': token})
+
+
+
+
+class GetDeletedUser(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        try:
+            datas = Users.objects.filter(is_deleted=True,  is_artist=False, is_superuser=False)
+            serializer = UserSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No User Found"}, status=404)
+        return Response(serializer.data)
+
+
+
+class GetDeletedArtist(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        try:
+            datas = Users.objects.filter(is_deleted=True, is_artist=True, is_superuser=False)
+            artist_serializer = UserSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Artist Found"}, status=404)
+        return Response(artist_serializer.data, status=status.HTTP_200_OK)
+

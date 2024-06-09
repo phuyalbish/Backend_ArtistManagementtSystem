@@ -9,7 +9,7 @@ from rest_framework.exceptions import PermissionDenied
 
 
 class EditMusic(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated & IsArtist]
 
     def patch(self, request, musicid):
         try:
