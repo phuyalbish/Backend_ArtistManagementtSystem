@@ -12,7 +12,7 @@ class GetMusic(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = list(Music.objects.filter(is_deleted=False))
+            datas = list(Music.objects.filter(is_deleted=False,is_hidden=False))
             serializer = MusicSerializer(datas, many=True)
         except:
             return Response({"detail":"No Music Found"}, status=404)

@@ -55,3 +55,9 @@ class GetLoggedInUser(APIView):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
+class CountryListView(APIView):
+    def get(self, request, *args, **kwargs):
+        countries = [country[0] for country in Users.ASIAN_COUNTRIES]
+        return Response({'countries': countries})
