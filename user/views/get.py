@@ -61,3 +61,13 @@ class CountryListView(APIView):
     def get(self, request, *args, **kwargs):
         countries = [country[0] for country in Users.ASIAN_COUNTRIES]
         return Response({'countries': countries})
+
+class ArtistCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_artists = Users.objects.filter(is_artist=True).count()
+        return Response({'total_artists': total_artists})
+
+class UserCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_users = Users.objects.count()
+        return Response({'total_users': total_users})

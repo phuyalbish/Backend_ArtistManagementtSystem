@@ -1,5 +1,5 @@
 from django.urls import path
-from album.views.get import GetAlbum, GetLoggedInSpecificAlbum
+from album.views.get import GetAlbum, GetLoggedInSpecificAlbum,AlbumCountView
 from album.views.get import GetAlbumSpecific
 from album.views.create import CreateAlbum
 from album.views.edit import EditAlbum
@@ -19,4 +19,5 @@ urlpatterns = [
     path('album/recover/<int:albumid>/', RecoverAlbum.as_view(), name="recover_album"),
     path('album/disable/<int:albumid>/', DisableAlbum.as_view(), name="disable_album"),
     path('album/enable/<int:albumid>/', EnableAlbum.as_view(), name="enable_album"),
+    path('album/album-count/', AlbumCountView.as_view(), name='album-count'),
 ]

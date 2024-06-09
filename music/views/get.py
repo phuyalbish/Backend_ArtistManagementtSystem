@@ -84,3 +84,8 @@ class GetLoggedInSpecificMusic(APIView):
         return Response(serializer.data)
     
 
+
+class MusicCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_music = Music.objects.count()
+        return Response({'total_music': total_music})

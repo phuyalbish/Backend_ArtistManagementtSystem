@@ -1,5 +1,5 @@
 from django.urls import path
-from music.views.get import GetMusic, GetLike, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic
+from music.views.get import GetMusic, GetLike, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic,MusicCountView
 from music.views.create import CreateMusic, CreateLike, CreateComment
 from music.views.edit import EditMusic, EditComment
 from music.views.delete import DeleteMusic, DeleteComment, DeleteLike
@@ -36,5 +36,6 @@ urlpatterns = [
     path('music/recover/<int:musicid>/', RecoverMusic.as_view(), name="recover_music"),
     path('music/unlike/<int:likeid>/', DeleteLike.as_view(), name="delete_like"),
     path('music/delete/comment/<int:commentid>/', DeleteComment.as_view(), name="delete_comment"),
-    path('music/artist/get/<int:artistid>/', GetArtistSpecificMusic.as_view(), name="get_artist_music")
+    path('music/artist/get/<int:artistid>/', GetArtistSpecificMusic.as_view(), name="get_artist_music"),
+     path('music/music-count/', MusicCountView.as_view(), name='music-count'),
 ]
