@@ -11,7 +11,7 @@ from rest_framework.exceptions import PermissionDenied
 class CreateMusic(APIView):
     permission_classes = [IsAuthenticated & (IsArtist | IsBand)]
     def post(self, request):
-        data = request.data
+        data = request.data.copy() if isinstance(request.data, dict) else request.POST.copy()
         data['artist'] = request.user.id
         serializer = MusicSerializer(data=data)
         if serializer.is_valid():
