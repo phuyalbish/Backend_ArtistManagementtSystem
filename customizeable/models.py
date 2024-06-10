@@ -1,5 +1,4 @@
 from django.db import models
-from user.models import Users
 from rest_framework import serializers
 
 
