@@ -8,6 +8,7 @@ from user.views.recover import RecoverUser
 from user.views.get import GetUser, GetDeletedArtist, GetDeletedUser
 from user.views.get import GetArtist
 from user.views.get import GetArtistSpecific
+from user.views.get import GetStaff,GetDeletedStaff,GetStaffSpecific
 from user.views.enable import EnableUser
 from user.views.disable import DisableUser
 from user.views.get import GetLoggedInUser,CountryListView,ArtistCountView,UserCountView,CountryDataAPIView,UserCreationStats
@@ -29,8 +30,11 @@ urlpatterns = [
     path('user/recover/<int:userid>/', RecoverUser.as_view(), name="recover_user"),
     path('login/', Login.as_view(),name='login'),
     path('artist/get/', GetArtist.as_view(), name="get_artist"),
+    path('staff/get/', GetStaff.as_view(), name="get_staff"),
     path('artist/get/deleted/', GetDeletedArtist.as_view(), name="get_deleted_artist"),
+    path('staff/get/deleted/', GetDeletedStaff.as_view(), name="get_deleted_staff"),
     path('artist/get/<int:artistid>/', GetArtistSpecific.as_view(), name="get_artist_specific"),
+    path('staff/get/<int:staffid>/', GetStaffSpecific.as_view(), name="get_staff_specific"),
     path('user/disable/<int:userid>/', DisableUser.as_view(), name="disable_user"),
     path('user/enable/<int:userid>/', EnableUser.as_view(), name="enable_user"),
     path('user/login-user/', GetLoggedInUser.as_view(), name='get_login_user_detail'),
