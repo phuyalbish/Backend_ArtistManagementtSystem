@@ -10,7 +10,7 @@ class HideAlbum(APIView):
     permission_classes = [IsAuthenticated,  IsArtist | IsBand]
     @EnableDisableDecorator()
     def delete(self, request, albumid):
-        music = Album.objects.get(id=albumid)
-        if music.artist != request.user:
+        album = Album.objects.get(id=albumid)
+        if album.artist != request.user:
             raise PermissionDenied("You are not the owner of this Album.")
         return {"is_hidden": True}
