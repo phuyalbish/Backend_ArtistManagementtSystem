@@ -6,9 +6,10 @@ class Band(models.Model):
     name = models.CharField(max_length=50, null=False)
     is_deleted = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
-    profile_img = models.ImageField(upload_to='uploads/band/', null=True)
-    banner_img = models.ImageField(upload_to='uploads/band', null=True)
-    modified_by = models.IntegerField(null=True)
+    img_cover = models.ImageField(upload_to='uploads/band/cover/', null=True, default='uploads/default/cover.jpeg' )
+    img_profile = models.ImageField(upload_to='uploads/band/profile/', null=True,   default='uploads/default/defaultBand.png' )
+
+    modified_by = models.IntegerField( null=True)
 
 
 class BandMember(models.Model):
