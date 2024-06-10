@@ -2,6 +2,7 @@ from django.db import models
 from django.utils  import timezone
 # Create your models here.
 from django.db import models
+from customizeable.models import CustomTheme
 from .manager import UserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
@@ -72,6 +73,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=50, choices=ASIAN_COUNTRIES, null=True)
     img_cover = models.ImageField(upload_to='uploads/user/cover/', null=True, default='uploads/default/cover.jpeg' )
     img_profile = models.ImageField(upload_to='uploads/user/profile/', null=True,   default='uploads/default/defaultUser.jpg' )
+    theme = models.ForeignKey(CustomTheme, on_delete=models.SET_NULL, null=True)
     is_artist = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
