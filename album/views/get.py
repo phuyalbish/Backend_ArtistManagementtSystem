@@ -11,7 +11,7 @@ class GetAlbum(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = list(Album.objects.filter(is_deleted=False))
+            datas = list(Album.objects.filter(is_hidden=False, is_deleted=False))
             serializer = AlbumSerializer(datas, many=True)
         except:
             return Response({"detail":"No Album Found"}, status=404)

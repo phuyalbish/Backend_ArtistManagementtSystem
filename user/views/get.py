@@ -78,10 +78,10 @@ class UserCountView(APIView):
 
 class CountryDataAPIView(APIView):
     def get(self, request):
-        # Retrieve country data from the Users model
+        
         country_data = Users.objects.values('country').annotate(count=Count('id'))
 
-        # Format the data for the response
+        
         formatted_data = [{'country': item['country'], 'count': item['count']} for item in country_data]
 
         return Response(formatted_data, status=status.HTTP_200_OK)
