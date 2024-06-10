@@ -26,6 +26,8 @@ urlpatterns = [
     path('album/recover/<int:albumid>/', RecoverAlbum.as_view(), name="recover_album"),
     path('album/disable/<int:albumid>/', DisableAlbum.as_view(), name="disable_album"),
 
+    path('album/enable/<int:albumid>/', EnableAlbum.as_view(), name="enable_album"),
+
     path('album/album-count/', AlbumCountView.as_view(), name='album-count'),
 
     path('album/hide/<int:albumid>/', HideAlbum.as_view(), name="disable_album"),
