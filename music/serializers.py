@@ -88,6 +88,9 @@ class CommentSerializer(serializers.ModelSerializer):
         return Comment.objects.create(**validated_data)
 
 
+
+
+
 class MusicSerializer(serializers.ModelSerializer):
     total_likes = serializers.SerializerMethodField()
     total_comments = serializers.SerializerMethodField()

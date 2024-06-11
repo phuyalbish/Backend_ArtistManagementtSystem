@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Users
-from django.contrib.auth.hashers import make_password
-from customizeable.models import CustomTheme, CustomThemeSerializer
+from customizeable.models import CustomThemeSerializer
 class UserSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(
@@ -9,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         required=True,
         style={'input_type': 'password', 'placeholder': 'Password'}
     )
-    user_customizable = CustomThemeSerializer(read_only = True)
+    theme = CustomThemeSerializer(read_only=True)
     class Meta:
         model = Users
         fields = "__all__"
