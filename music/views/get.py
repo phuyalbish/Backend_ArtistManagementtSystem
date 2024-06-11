@@ -3,16 +3,19 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer, CommentReplySerializer,CommentLikeSerializer, CommentReplyLikeSerializer
+from album.serializers import AlbumSerializer
 from music.models import Music, Like, Comment, CommentLike, CommentReply, CommentReplyLike
+from album.models import Album
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
-
-
+from genre.models import Genre
+import random
+from rest_framework import generics
 
 class GetMusic(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = list(Music.objects.filter(is_deleted=False))
+            datas = list(Music.objects.filter(is_deleted=False,is_hidden=False))
             serializer = MusicSerializer(datas, many=True)
         except:
             return Response({"detail":"No Music Found"}, status=404)
@@ -42,7 +45,7 @@ class GetAlbumMusicSpecific(APIView):
     permission_classes = [AllowAny]
     def get(self, request, albumid):
         try:
-            data = Music.objects.filter(album=albumid, is_deleted=False)
+            data = Music.objects.filter(album=albumid, is_deleted=False, is_hidden=False)
             serializer = MusicSerializer(data, many=True)
         except:
             return Response({"detail":"No Music in Album"}, status=404)
@@ -64,7 +67,7 @@ class GetArtistSpecificMusic(APIView):
     permission_classes = [AllowAny]
     def get(self, request, artistid):
         try:    
-            data = Music.objects.filter(artist=artistid, is_deleted=False)
+            data = Music.objects.filter(artist=artistid, is_deleted=False, is_hidden=False)
             serializer = MusicSerializer(data, many=True)
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
@@ -93,3 +96,59 @@ class GetLoggedInSpecificDeletedMusic(APIView):
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
+    
+class GetMusicFromGenreWeather(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, weathername):
+        try:
+            genres = Genre.objects.filter(weather=weathername)
+        except Genre.DoesNotExist:
+            return Response({"error": "Weather not found"}, status=404)
+        music_from_weather = Music.objects.filter(genre__in=genres, is_hidden=False, is_deleted=False)
+        music_list = list(music_from_weather)
+        random.shuffle(music_list)
+        music_list = music_list[:5]
+        serializer = MusicSerializer(music_list, many=True)
+        serialized_music = serializer.data
+        return Response(serialized_music)
+    
+
+class MusicCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_music = Music.objects.count()
+        return Response({'total_music': total_music})
+
+class GetMusicFromGenre(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, genreid):
+        music_from_weather = Music.objects.filter(genre=genreid, is_hidden=False, is_deleted=False)
+        serializer = MusicSerializer(music_from_weather, many=True, )
+        serialized_music = serializer.data
+        return Response(serialized_music)
+    
+class GetAllMusicWithGenre(APIView):
+    def get(self, request):
+        music_with_genre = Music.objects.exclude(genre=None, is_hidden=True, is_deleted=True) 
+        serializer = MusicSerializer(music_with_genre, many=True)
+        return Response(serializer.data)
+
+
+class UserLikedMusicList(generics.ListAPIView):
+    serializer_class = MusicSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        liked_music_ids = Like.objects.filter(user=user, is_like=True).values_list('music_id', flat=True)
+        return Music.objects.filter(id__in=liked_music_ids, is_deleted=False)
+
+
+
+class UserLikedAlbumList(generics.ListAPIView):
+    serializer_class = AlbumSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        liked_album_ids = Like.objects.filter(user=user, is_like=True).values_list('id', flat=True)
+        return Album.objects.filter(id__in=liked_album_ids, is_deleted=False)

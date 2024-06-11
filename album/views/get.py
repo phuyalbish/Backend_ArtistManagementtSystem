@@ -11,7 +11,7 @@ class GetAlbum(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = list(Album.objects.filter(is_deleted=False))
+            datas = list(Album.objects.filter(is_hidden=False, is_deleted=False))
             serializer = AlbumSerializer(datas, many=True)
         except:
             return Response({"detail":"No Album Found"}, status=404)
@@ -40,6 +40,12 @@ class GetLoggedInSpecificAlbum(APIView):
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
+    
+class AlbumCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_albums = Album.objects.count()
+        return Response({'total_albums': total_albums})
+
 
 
 class GetComment(APIView):
@@ -75,3 +81,4 @@ class GetLoggedInSpecificDeletedAlbum(APIView):
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
+
