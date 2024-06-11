@@ -7,6 +7,7 @@ class CustomTheme(models.Model):
     secondaryColor = models.CharField(max_length=50, default="#ff4000")
     darkPrimaryColor =  models.CharField(max_length=50, default="#f6f3eb")
     lightPrimaryColor = models.CharField(max_length=50, default="#ECE6D5")
+    opacity = models.DecimalField(max_digits=5, decimal_places=2, default=0.80)
     img_profile = models.ImageField(upload_to='uploads/custombg/', null=True,   default='uploads/default/defaultCustomBg.jpg' )
     is_deleted = models.BooleanField(default=False)
 
