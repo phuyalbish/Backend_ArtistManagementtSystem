@@ -1,6 +1,6 @@
 from django.urls import path
 
-from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetLoggedInSpecificDeletedMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView
+from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetLoggedInSpecificDeletedMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView,UserLikedMusicList,UserLikedAlbumList
 from music.views.create import CreateMusic, CreateComment, CreateCommentReply, ToggleMusicLike, ToggleCommentLike, ToggleCommentReplyLike
 
 from music.views.edit import EditMusic, EditComment
@@ -54,6 +54,8 @@ urlpatterns = [
      path('music/music-count/', MusicCountView.as_view(), name='music-count'),
 
     path('music/delete/comment/reply/<int:commentid>/', DeleteCommentReply.as_view(), name="delete_comment_reply"),
-    path('music/artist/get/<int:artistid>/', GetArtistSpecificMusic.as_view(), name="get_artist_music")
+    path('music/artist/get/<int:artistid>/', GetArtistSpecificMusic.as_view(), name="get_artist_music"),
+    path('user/liked/', UserLikedMusicList.as_view(), name='user-liked-music'),
+    # path('liked/album/', UserLikedAlbumList.as_view(), name='user-liked-album-list'),
 
 ]

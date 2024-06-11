@@ -12,5 +12,6 @@ class UnHideAlbum(APIView):
     def delete(self, request, albumid):
         album = Album.objects.get(id=albumid)
         if album.artist != request.user:
+      
             raise PermissionDenied("You are not the owner of this album.")
         return {"is_hidden": False}

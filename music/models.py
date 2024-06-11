@@ -4,7 +4,7 @@ from genre.models import Genre
 from album.models import Album
 from band.models import Band
 from user.models import Users
-
+from customizeable.models import CustomTheme
 class Music(models.Model):
     
     name = models.CharField(max_length=50, null=False)
@@ -25,6 +25,7 @@ class Music(models.Model):
     is_released = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
     modified_by = models.IntegerField(null=True)
+    theme = models.ForeignKey(CustomTheme, null=True, on_delete=models.CASCADE)
 
 class Like(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='music_like_user')
