@@ -7,4 +7,5 @@ media/uploads/user/*
 media/uploads/music/*
 media/uploads/album/*
 media/uploads/band/*
+media/uploads/theme/*
 !media/uploads/default

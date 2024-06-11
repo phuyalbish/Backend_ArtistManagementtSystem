@@ -28,6 +28,16 @@ class GetArtist(APIView):
             return Response({"detail":"No Artist Found"}, status=404)
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
 
+class GetStaff(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        try:
+            datas = Users.objects.filter(is_deleted=False, is_staff=True, is_superuser=False)
+            staff_serializer = UserSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Staff Found"}, status=404)
+        return Response(staff_serializer.data, status=status.HTTP_200_OK)
+
 class GetUserSpecific(APIView):
     permission_classes = [AllowAny]
     def get(self, request, userid):
@@ -43,10 +53,24 @@ class GetArtistSpecific(APIView):
     def get(self, request, artistid):
         try:
             data = Users.objects.get(pk=artistid, is_artist=True, is_deleted=False)
-            serializer = Users(data, many=False)
+            serializer = UserSerializer(data, many=False)
         except:
             return Response({"detail":"No Artist Found"}, status=404)
         return Response(serializer.data)
+    
+class GetStaffSpecific(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, staffid):
+        try:
+            data = Users.objects.get(pk=staffid, is_staff=True, is_deleted=False)
+            print(data)
+            serializer = UserSerializer(data, many=False)
+            return Response(serializer.data)
+        except:
+            return Response({"detail":"No Staff Found"}, status=404)
+
+
+
         
     
 
@@ -133,4 +157,14 @@ class GetDeletedArtist(APIView):
         except:
             return Response({"detail":"No Artist Found"}, status=404)
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
+    
+class GetDeletedStaff(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        try:
+            datas = Users.objects.filter(is_deleted=True, is_staff=True, is_superuser=False)
+            staff_serializer = UserSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Staff Found"}, status=404)
+        return Response(staff_serializer.data, status=status.HTTP_200_OK)
 
