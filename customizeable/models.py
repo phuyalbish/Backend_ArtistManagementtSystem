@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 class CustomTheme(models.Model):
-    name= models.CharField(max_length=100, null=False, unique=True)
+    name= models.CharField(max_length=100, null=False, unique=True, default="default")
     secondaryColor = models.CharField(max_length=50, default="#ff4000")
     darkPrimaryColor =  models.CharField(max_length=50, default="#f6f3eb")
     lightPrimaryColor = models.CharField(max_length=50, default="#ECE6D5")
