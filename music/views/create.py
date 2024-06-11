@@ -11,12 +11,12 @@ from music.models import Music, Comment, Like, CommentLike, CommentReplyLike, Co
 class CreateMusic(APIView):
     permission_classes = [IsAuthenticated & (IsArtist | IsBand)]
     def post(self, request):
-        data = request.data
-        print(request.user.id)
-        data['artist'] = request.user.id
+        data = request.data.copy() if isinstance(request.data, dict) else request.POST.copy()
+        if 'artist' not in data:
+            data['artist'] = request.user.id
         serializer = MusicSerializer(data=data)
         if serializer.is_valid():
-            if request.data.get("artist")==request.user.id:
+            if data.get("artist")==request.user.id:
                 serializer.save()
                 return Response(serializer.data)
             else:
