@@ -9,7 +9,8 @@ from core.permissions import  IsSuperuser, IsStaff
 class CreateTheme(APIView):
     # permission_classes = [IsAuthenticated & (IsSuperuser | IsStaff)]
     def post(self, request):
-        serializer = CustomThemeSerializer(data=request.data)
+        data = request.data.copy() if isinstance(request.data, dict) else request.POST.copy()
+        serializer = CustomThemeSerializer(data=data)
         if serializer.is_valid():
              serializer.save()
         #     if not request.user.is_superuser:
