@@ -10,6 +10,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from genre.models import Genre
 import random
 from rest_framework import generics
+from django.utils import timezone
+from datetime import timedelta
+
+
 
 class GetMusic(APIView):
     permission_classes = [AllowAny]
@@ -152,3 +156,13 @@ class UserLikedAlbumList(generics.ListAPIView):
         user = self.request.user
         liked_album_ids = Like.objects.filter(user=user, is_like=True).values_list('id', flat=True)
         return Album.objects.filter(id__in=liked_album_ids, is_deleted=False)
+    
+
+
+class NewlyCreatedMusicView(generics.ListAPIView):
+    serializer_class = MusicSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        thirty_days_ago = timezone.now() - timedelta(days=2)
+        return Music.objects.filter(created_at__gte=thirty_days_ago).order_by('-created_at')[:5]

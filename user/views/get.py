@@ -7,6 +7,9 @@ from user.models import Users
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Count
 from django.db.models.functions import TruncDate
+from django.utils import timezone
+from datetime import timedelta
+from rest_framework import generics
 
 class GetUser(APIView):
     permission_classes = [AllowAny]
@@ -168,3 +171,12 @@ class GetDeletedStaff(APIView):
             return Response({"detail":"No Staff Found"}, status=404)
         return Response(staff_serializer.data, status=status.HTTP_200_OK)
 
+class NewlyJoinedArtistsView(generics.ListAPIView):
+    queryset = Users.objects.filter(is_artist=True)
+     
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        return Users.objects.filter(is_artist=True, created_at__gte=thirty_days_ago)[:5]

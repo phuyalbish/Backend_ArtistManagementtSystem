@@ -11,7 +11,7 @@ from user.views.get import GetArtistSpecific
 from user.views.get import GetStaff,GetDeletedStaff,GetStaffSpecific
 from user.views.enable import EnableUser
 from user.views.disable import DisableUser
-from user.views.get import GetLoggedInUser,CountryListView,ArtistCountView,UserCountView,CountryDataAPIView,UserCreationStats
+from user.views.get import GetLoggedInUser,CountryListView,ArtistCountView,UserCountView,CountryDataAPIView,UserCreationStats,NewlyJoinedArtistsView
 
 
 
@@ -43,5 +43,6 @@ urlpatterns = [
     path('user/user-count/', UserCountView.as_view(), name='user-count'),
     path('country/country-data/', CountryDataAPIView.as_view(), name='country_data'),
     path('user/user-creation-stats/', UserCreationStats.as_view(), name='user_creation_stats'),
-
+    path('user/newly-joined-artists/', NewlyJoinedArtistsView.as_view(), name='newly-joined-artists'),
 ]
+
