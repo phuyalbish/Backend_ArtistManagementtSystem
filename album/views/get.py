@@ -82,3 +82,13 @@ class GetLoggedInSpecificDeletedAlbum(APIView):
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
 
+
+class GetArtistSpecificAlbum(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, artistid):
+        try:    
+            data = Album.objects.filter(artist=artistid, is_deleted=False, is_hidden=False)
+            serializer = AlbumSerializer(data, many=True)
+        except:
+            return Response({"detail":"No Album in Artist"}, status=404)
+        return Response(serializer.data)
