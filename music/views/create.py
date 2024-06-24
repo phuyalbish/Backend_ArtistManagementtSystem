@@ -12,8 +12,6 @@ class CreateMusic(APIView):
     permission_classes = [IsAuthenticated & (IsArtist | IsBand)]
     def post(self, request):
         data = request.data.copy() if isinstance(request.data, dict) else request.POST.copy()
-        print(request.user.id)
-        print(data)
         if 'artist' not in data:
             data['artist'] = request.user.id
             

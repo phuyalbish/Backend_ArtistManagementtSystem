@@ -63,7 +63,6 @@ class GetStaffSpecific(APIView):
     def get(self, request, staffid):
         try:
             data = Users.objects.get(pk=staffid, is_staff=True, is_deleted=False)
-            print(data)
             serializer = UserSerializer(data, many=False)
             return Response(serializer.data)
         except:

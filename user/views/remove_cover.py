@@ -1,0 +1,42 @@
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+import os
+from user.models import Users
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
+
+class CoverImageRemove(APIView):
+    permission_classes = [IsAuthenticated]
+    def delete(self, request, pk):
+        user = get_object_or_404(Users, pk=pk)
+        try:
+            user = Users.objects.get(pk=pk)
+        except Users.DoesNotExist:
+            return Response({"msg": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        if user != request.user and not request.user.is_staff and not request.user.is_superuser:
+            raise PermissionDenied("You do not have permission to perform this action.")
+        if  request.user.is_staff and user.is_superuser:
+            raise PermissionDenied("You do not have permission to perform this action.")
+        if not request.user.is_superuser and user.is_staff:
+            raise PermissionDenied("You do not have permission to perform this action.")
+        
+        
+        try:
+            if user.img_cover  and user.img_cover != 'uploads/default/cover.jpeg':
+                current_img_path = user.img_cover.path
+                if os.path.exists(current_img_path):
+                    os.remove(current_img_path)
+                user.img_cover = 'uploads/default/cover.jpeg'
+                user.save()
+                return Response({'message': 'Cover image deleted and updated successfully.'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                if not user.img_cover:
+                    user.img_cover = 'uploads/default/cover.jpeg'
+                    user.save()
+                    return Response({'message': 'User does not have a cover image. Therefore added default image'}, status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response({'message': 'User already has default cover image.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': f'Error deleting cover image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

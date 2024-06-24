@@ -114,7 +114,7 @@ class GetMusicFromGenreWeather(APIView):
             genres = Genre.objects.filter(weather=weathername)
         except Genre.DoesNotExist:
             return Response({"error": "Weather not found"}, status=404)
-        music_from_weather = Music.objects.filter(is_disabled=True, genre__in=genres, is_hidden=False, is_deleted=False)
+        music_from_weather = Music.objects.filter(is_disabled=False, genre__in=genres, is_hidden=False, is_deleted=False)
         music_list = list(music_from_weather)
         random.shuffle(music_list)
         music_list = music_list[:5]
@@ -131,7 +131,7 @@ class MusicCountView(APIView):
 class GetMusicFromGenre(APIView):
     permission_classes = [AllowAny]
     def get(self, request, genreid):
-        music_from_weather = Music.objects.filter(is_disabled=True, genre=genreid, is_hidden=False, is_deleted=False)
+        music_from_weather = Music.objects.filter(is_disabled=False, genre=genreid, is_hidden=False, is_deleted=False)
         serializer = MusicSerializer(music_from_weather, many=True, )
         serialized_music = serializer.data
         return Response(serialized_music)
