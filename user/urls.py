@@ -14,7 +14,7 @@ from user.views.enable import EnableUser
 from user.views.disable import DisableUser
 from user.views.remove_profile import ProfileImageRemove
 from user.views.remove_cover import CoverImageRemove
-from user.views.get import GetLoggedInUser,CountryListView,ArtistCountView,UserCountView,CountryDataAPIView,UserCreationStats
+from user.views.get import GetLoggedInUser,CountryListView,ArtistCountView,UserCountView,CountryDataAPIView,UserCreationStats,NewlyJoinedArtistsView
 
 
 
@@ -49,5 +49,6 @@ urlpatterns = [
     path('user/user-creation-stats/', UserCreationStats.as_view(), name='user_creation_stats'),
     path('users/profile-delete/<int:pk>/', ProfileImageRemove.as_view(), name='profile-image-delete'),
     path('users/cover-delete/<int:pk>/', CoverImageRemove.as_view(), name='cover-image-delete'),
-
+    path('user/newly-joined-artists/', NewlyJoinedArtistsView.as_view(), name='newly-joined-artists'),
 ]
+
