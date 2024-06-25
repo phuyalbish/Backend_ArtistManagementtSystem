@@ -1,5 +1,5 @@
-FROM python:3.12-slim-bookworm
-ARG DJANGO_ENV
+FROM python:3.12-slim-bookworm  AS build
+ARG DJANGO_ENV 
 
 ENV DJANGO_ENV=${DJANGO_ENV} \
   PYTHONFAULTHANDLER=1 \
@@ -30,6 +30,11 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry lock
 RUN poetry install
+
+EXPOSE 8080
+
+
+FROM build AS production
 
 COPY . .
 

@@ -16,8 +16,19 @@ from datetime import timedelta
 import os
 from django.conf import settings
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +41,8 @@ SECRET_KEY = 'django-insecure-6eev7#byl$d%x3wx1q$-^6tiy3thepachh*8alv09p60cg-gge
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    
+    '0.0.0.0',
+    '127.0.0.1'
 ]
 
 CSRF_TRUSTED_ORIGINS = ["https://1353-2407-5200-400-e0-dbf-ec-8c3f-6f0d.ngrok-free.app"]
