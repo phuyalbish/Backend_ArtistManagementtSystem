@@ -5,10 +5,6 @@ from rest_framework.response import Response
 from album.serializers import AlbumSerializer, CommentSerializer
 from album.models import Album, Comment
 from rest_framework.permissions import AllowAny,IsAuthenticated
-from django.utils import timezone
-from datetime import timedelta
-from rest_framework import generics
-
 
 
 class GetAlbum(APIView):
@@ -96,10 +92,3 @@ class GetArtistSpecificAlbum(APIView):
         except:
             return Response({"detail":"No Album in Artist"}, status=404)
         return Response(serializer.data)
-class NewlyCreatedAlbumsView(generics.ListAPIView):
-    serializer_class = AlbumSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        thirty_days_ago = timezone.now() - timedelta(days=30)
-        return Album.objects.filter(created_at__gte=thirty_days_ago).order_by('-created_at')[:5]

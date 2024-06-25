@@ -14,8 +14,6 @@ markdown = "^3.6"
 django-filter = "^24.2"
 djangorestframework-simplejwt = "^5.3.1"
 pillow = "^10.3.0"
-psycopg2-binary = "^2.9.9"
-python-dotenv = "^1.0.1"
 
 
 [build-system]
