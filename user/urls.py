@@ -1,5 +1,6 @@
 from django.urls import path
 from user.views.login import Login
+from user.views.credential import Credential
 from user.views.get import GetUserSpecific, GetCSRF
 from user.views.create import CreateUser
 from user.views.edit import EditUser
@@ -11,7 +12,9 @@ from user.views.get import GetArtistSpecific
 from user.views.get import GetStaff,GetDeletedStaff,GetStaffSpecific
 from user.views.enable import EnableUser
 from user.views.disable import DisableUser
-from user.views.get import GetLoggedInUser,CountryListView,ArtistCountView,UserCountView,CountryDataAPIView,UserCreationStats
+from user.views.remove_profile import ProfileImageRemove
+from user.views.remove_cover import CoverImageRemove
+from user.views.get import GetLoggedInUser,CountryListView,ArtistCountView,UserCountView,CountryDataAPIView,UserCreationStats,NewlyJoinedArtistsView
 
 
 
@@ -29,6 +32,7 @@ urlpatterns = [
     path('user/delete/<int:userid>/', DeleteUser.as_view(), name="delete_user"),
     path('user/recover/<int:userid>/', RecoverUser.as_view(), name="recover_user"),
     path('login/', Login.as_view(),name='login'),
+    path('credential/', Credential.as_view(),name='credential'),
     path('artist/get/', GetArtist.as_view(), name="get_artist"),
     path('staff/get/', GetStaff.as_view(), name="get_staff"),
     path('artist/get/deleted/', GetDeletedArtist.as_view(), name="get_deleted_artist"),
@@ -43,5 +47,8 @@ urlpatterns = [
     path('user/user-count/', UserCountView.as_view(), name='user-count'),
     path('country/country-data/', CountryDataAPIView.as_view(), name='country_data'),
     path('user/user-creation-stats/', UserCreationStats.as_view(), name='user_creation_stats'),
-
+    path('users/profile-delete/<int:pk>/', ProfileImageRemove.as_view(), name='profile-image-delete'),
+    path('users/cover-delete/<int:pk>/', CoverImageRemove.as_view(), name='cover-image-delete'),
+    path('user/newly-joined-artists/', NewlyJoinedArtistsView.as_view(), name='newly-joined-artists'),
 ]
+

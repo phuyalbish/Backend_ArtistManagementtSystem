@@ -1,6 +1,6 @@
 from django.urls import path
 
-from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetLoggedInSpecificDeletedMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView,UserLikedMusicList,UserLikedAlbumList
+from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetLoggedInSpecificDeletedMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView,UserLikedMusicList,NewlyCreatedMusicView,GetAdminMusic
 from music.views.create import CreateMusic, CreateComment, CreateCommentReply, ToggleMusicLike, ToggleCommentLike, ToggleCommentReplyLike
 
 from music.views.edit import EditMusic, EditComment
@@ -15,6 +15,7 @@ from music.views.unhide import UnHideMusic
 
 urlpatterns = [
     path('music/get/', GetMusic.as_view(), name="get_music"),
+    path('music/admin/get/', GetAdminMusic.as_view(), name="get_admin_music"),
     path('music/get/genre/<int:genreid>', GetMusicFromGenre.as_view(), name="get_music_specific_genre"),
     
     path('music/get/genre/', GetAllMusicWithGenre.as_view(), name="get_music_gemre"),
@@ -57,5 +58,6 @@ urlpatterns = [
     path('music/artist/get/<int:artistid>/', GetArtistSpecificMusic.as_view(), name="get_artist_music"),
     path('user/liked/', UserLikedMusicList.as_view(), name='user-liked-music'),
     # path('liked/album/', UserLikedAlbumList.as_view(), name='user-liked-album-list'),
+    path('user/newly-joined-music/', NewlyCreatedMusicView.as_view(), name='newly-joined-artists'),
 
 ]

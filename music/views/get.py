@@ -10,12 +10,26 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from genre.models import Genre
 import random
 from rest_framework import generics
+from django.utils import timezone
+from datetime import timedelta
+
+
 
 class GetMusic(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = list(Music.objects.filter(is_deleted=False,is_hidden=False))
+            datas = list(Music.objects.filter(is_disabled=False,is_deleted=False,is_hidden=False))
+            serializer = MusicSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Music Found"}, status=404)
+        return Response(serializer.data)
+
+class GetAdminMusic(APIView):
+    permission_classes = [IsAuthenticated & IsAdminUser]
+    def get(self, request):
+        try:
+            datas = list(Music.objects.filter(is_deleted=False))
             serializer = MusicSerializer(datas, many=True)
         except:
             return Response({"detail":"No Music Found"}, status=404)
@@ -45,7 +59,7 @@ class GetAlbumMusicSpecific(APIView):
     permission_classes = [AllowAny]
     def get(self, request, albumid):
         try:
-            data = Music.objects.filter(album=albumid, is_deleted=False, is_hidden=False)
+            data = Music.objects.filter(is_disabled=False,album=albumid, is_deleted=False, is_hidden=False)
             serializer = MusicSerializer(data, many=True)
         except:
             return Response({"detail":"No Music in Album"}, status=404)
@@ -67,7 +81,7 @@ class GetArtistSpecificMusic(APIView):
     permission_classes = [AllowAny]
     def get(self, request, artistid):
         try:    
-            data = Music.objects.filter(artist=artistid, is_deleted=False, is_hidden=False)
+            data = Music.objects.filter(is_disabled=False, artist=artistid, is_deleted=False, is_hidden=False)
             serializer = MusicSerializer(data, many=True)
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
@@ -104,7 +118,7 @@ class GetMusicFromGenreWeather(APIView):
             genres = Genre.objects.filter(weather=weathername)
         except Genre.DoesNotExist:
             return Response({"error": "Weather not found"}, status=404)
-        music_from_weather = Music.objects.filter(genre__in=genres, is_hidden=False, is_deleted=False)
+        music_from_weather = Music.objects.filter(is_disabled=False, genre__in=genres, is_hidden=False, is_deleted=False)
         music_list = list(music_from_weather)
         random.shuffle(music_list)
         music_list = music_list[:5]
@@ -121,7 +135,7 @@ class MusicCountView(APIView):
 class GetMusicFromGenre(APIView):
     permission_classes = [AllowAny]
     def get(self, request, genreid):
-        music_from_weather = Music.objects.filter(genre=genreid, is_hidden=False, is_deleted=False)
+        music_from_weather = Music.objects.filter(is_disabled=False, genre=genreid, is_hidden=False, is_deleted=False)
         serializer = MusicSerializer(music_from_weather, many=True, )
         serialized_music = serializer.data
         return Response(serialized_music)
@@ -152,3 +166,13 @@ class UserLikedAlbumList(generics.ListAPIView):
         user = self.request.user
         liked_album_ids = Like.objects.filter(user=user, is_like=True).values_list('id', flat=True)
         return Album.objects.filter(id__in=liked_album_ids, is_deleted=False)
+    
+
+
+class NewlyCreatedMusicView(generics.ListAPIView):
+    serializer_class = MusicSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        thirty_days_ago = timezone.now() - timedelta(days=2)
+        return Music.objects.filter(created_at__gte=thirty_days_ago).order_by('-created_at')[:5]
