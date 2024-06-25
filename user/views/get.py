@@ -7,6 +7,9 @@ from user.models import Users
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Count
 from django.db.models.functions import TruncDate
+from django.utils import timezone
+from datetime import timedelta
+from rest_framework import generics
 
 class GetUser(APIView):
     permission_classes = [AllowAny]
@@ -66,11 +69,7 @@ class GetStaffSpecific(APIView):
             serializer = UserSerializer(data, many=False)
             return Response(serializer.data)
         except:
-            return Response({"detail":"No Staff Found"}, status=404)
-
-
-
-        
+            return Response({"detail":"No Staff Found"}, status=404)      
     
 
 class GetLoggedInUser(APIView):
@@ -98,7 +97,6 @@ class UserCountView(APIView):
         return Response({'total_users': total_users})
 
 
-
 class CountryDataAPIView(APIView):
     def get(self, request):
         
@@ -122,7 +120,6 @@ class UserCreationStats(APIView):
         return Response(response_data)
 
     
-
 class GetCSRF(APIView):
     permission_classes = [AllowAny]
     def getCSRFToken(request):
@@ -131,8 +128,6 @@ class GetCSRF(APIView):
         except:
             return Response({'detail':"Token Not Found"}, status=404)
         return Response({'token': token})
-
-
 
 
 class GetDeletedUser(APIView):
@@ -144,8 +139,6 @@ class GetDeletedUser(APIView):
         except:
             return Response({"detail":"No User Found"}, status=404)
         return Response(serializer.data)
-
-
 
 class GetDeletedArtist(APIView):
     permission_classes = [AllowAny]
@@ -167,3 +160,12 @@ class GetDeletedStaff(APIView):
             return Response({"detail":"No Staff Found"}, status=404)
         return Response(staff_serializer.data, status=status.HTTP_200_OK)
 
+class NewlyJoinedArtistsView(generics.ListAPIView):
+    queryset = Users.objects.filter(is_artist=True)
+     
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        return Users.objects.filter(is_artist=True, created_at__gte=thirty_days_ago)[:5]
