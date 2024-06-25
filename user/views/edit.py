@@ -10,9 +10,9 @@ from rest_framework.exceptions import PermissionDenied
 
 class EditUser(APIView):
     permission_classes = [IsAuthenticated]
-    def patch(self, request,userid):
+    def patch(self, request):
         try:
-            user = Users.objects.get(id=userid)
+            user = Users.objects.get(id=request.user.id)
         except Users.DoesNotExist:
             return Response({"msg": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         if user != request.user and not request.user.is_staff and not request.user.is_superuser:

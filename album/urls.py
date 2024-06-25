@@ -1,6 +1,6 @@
 from django.urls import path
 
-from album.views.get import GetAlbum, GetComment, GetLoggedInSpecificAlbum, GetDeletedAlbum, GetLoggedInSpecificDeletedAlbum, AlbumCountView,NewlyCreatedAlbumsView
+from album.views.get import GetAlbum, GetComment, GetLoggedInSpecificAlbum, GetDeletedAlbum, GetLoggedInSpecificDeletedAlbum, AlbumCountView,NewlyCreatedAlbumsView,GetArtistSpecificAlbum
 
 from album.views.get import GetAlbumSpecific
 from album.views.create import CreateAlbum, ToggleCommentLike, ToggleAlbumLike, ToggleCommentReplyLike, CreateComment, CreateCommentReply
@@ -39,5 +39,5 @@ urlpatterns = [
     path('album/likeunlike/comment/<int:commentid>/', ToggleCommentLike.as_view(), name="toggle_like_album"),
     path('album/likeunlike/comment/reply/<int:commentid>/', ToggleCommentReplyLike.as_view(), name="toggle_like_album"),
     path('user/newly-joined-album/', NewlyCreatedAlbumsView.as_view(), name='newly-joined-artists'),
-
+    path('album/artist/get/<int:artistid>/', GetArtistSpecificAlbum.as_view(), name="get_artist_music"),
 ]
