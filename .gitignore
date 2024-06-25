@@ -5,5 +5,7 @@ db.sqlite3
 !*/migrations/__init__.py
 media/uploads/user/*
 media/uploads/music/*
-!media/uploads/music/image
-media/uploads/music/image/*
+media/uploads/album/*
+media/uploads/band/*
+media/uploads/theme/*
+!media/uploads/default

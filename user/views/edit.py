@@ -10,14 +10,16 @@ from rest_framework.exceptions import PermissionDenied
 
 class EditUser(APIView):
     permission_classes = [IsAuthenticated]
-    def patch(self, request,userid):
+    def patch(self, request):
         try:
-            user = Users.objects.get(id=userid)
+            user = Users.objects.get(id=request.user.id)
         except Users.DoesNotExist:
             return Response({"msg": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         if user != request.user and not request.user.is_staff and not request.user.is_superuser:
             raise PermissionDenied("You do not have permission to perform this action.")
         if  request.user.is_staff and user.is_superuser:
+            raise PermissionDenied("You do not have permission to perform this action.")
+        if not request.user.is_superuser and user.is_staff:
             raise PermissionDenied("You do not have permission to perform this action.")
         serializer = UserSerializer(instance=user, data=request.data, partial=True)
         if serializer.is_valid():

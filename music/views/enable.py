@@ -8,4 +8,8 @@ class EnableMusic(APIView):
     permission_classes = [IsAuthenticated,  IsStaff | IsSuperuser]
     @EnableDisableDecorator()
     def delete(self, request, musicid):
-        return {"is_disabled": False}
+        
+        return {
+            "modified_by" :request.user.id ,
+            "is_disabled": False
+            }
