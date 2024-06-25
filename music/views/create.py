@@ -14,6 +14,7 @@ class CreateMusic(APIView):
         data = request.data.copy() if isinstance(request.data, dict) else request.POST.copy()
         if 'artist' not in data:
             data['artist'] = request.user.id
+            
         serializer = MusicSerializer(data=data)
         if serializer.is_valid():
             if data.get("artist")==request.user.id:
