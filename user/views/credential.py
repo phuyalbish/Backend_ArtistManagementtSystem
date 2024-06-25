@@ -15,6 +15,8 @@ class Credential(APIView):
             user = Users.objects.get(email=email)
         except Users.DoesNotExist:
             return Response({"msg":"User doesn't exist"},status=status.HTTP_401_UNAUTHORIZED)
+        print(request.user)
+        print(email)
         if str(request.user) != str(request.data.get("email")):
             return Response({"msg":"Please provide your own detail."},status=status.HTTP_401_UNAUTHORIZED)
         if not user.check_password(password):
