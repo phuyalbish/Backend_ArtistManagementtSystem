@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm  AS build
+FROM python:3.12-slim-bookworm
 ARG DJANGO_ENV 
 
 ENV DJANGO_ENV=${DJANGO_ENV} \
@@ -22,22 +22,20 @@ RUN apt-get update \
     libpq-dev \
     wget \
   && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
-  && pip install poetry && poetry --version
+  &&  pip install psycopg2-binary && pip install poetry && poetry --version
 
 WORKDIR /backend
 
-COPY pyproject.toml poetry.lock ./
+COPY requirements.txt ./
+
+RUN pip install -r requirements.txt
+
+COPY . .
 
 RUN poetry lock
 RUN poetry install
 
-EXPOSE 8080
+RUN python manage.py collectstatic --noinput
 
 
-FROM build AS production
-
-COPY . .
-
-EXPOSE 8080
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+RUN python manage.py migrate

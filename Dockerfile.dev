@@ -22,7 +22,7 @@ RUN apt-get update \
     libpq-dev \
     wget \
   && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
-  && pip install poetry && poetry --version
+  &&  pip install psycopg2-binary && pip install poetry && poetry --version
 
 WORKDIR /backend
 
@@ -30,4 +30,3 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry lock
 RUN poetry install
-EXPOSE 8080
