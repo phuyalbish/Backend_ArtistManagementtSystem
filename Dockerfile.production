@@ -26,14 +26,16 @@ RUN apt-get update \
 
 WORKDIR /backend
 
-COPY requirements.txt ./
 
-RUN pip install -r requirements.txt
-
-COPY . .
+COPY pyproject.toml poetry.lock ./
 
 RUN poetry lock
 RUN poetry install
+# COPY requirements.txt ./
+
+# RUN pip install -r requirements.txt
+
+COPY . .
 
 RUN python manage.py collectstatic --noinput
 
