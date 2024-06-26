@@ -1,0 +1,1 @@
+[{"model": "genre.genre", "pk": 1, "fields": {"name": "Clear", "is_deleted": false, "modified_by": null, "weather": "Clear"}}]

@@ -30,3 +30,4 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry lock
 RUN poetry install
+

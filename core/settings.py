@@ -24,7 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-VAR = os.getenv('VAR')
 
 
 # Quick-start development settings - unsuitable for production
@@ -34,22 +33,23 @@ VAR = os.getenv('VAR')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG')=='True'
+# DEBUG = True
 
-ALLOWED_HOSTS = [
-    # os.getenv('ALLOWED_HOSTS', '').split(',')
-    os.getenv('ALLOWED_HOSTS')
-    ]
+ALLOWED_HOSTS =  os.getenv('ALLOWED_HOSTS', '').split(',')
+    # os.getenv('ALLOWED_HOSTS')
+    
 
 CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_TRUSTED_ORIGINS')]
 
+# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 AUTH_USER_MODEL = 'user.Users'
 
 
 CORS_ALLOW_CREDENTIALS = os.getenv('CORS_ALLOW_CREDENTIALS').lower() == 'true'
-
 CORS_ALLOWED_ORIGINS =  os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+
 CORS_ALLOW_METHODS = (
     "DELETE",
     "GET",
@@ -103,7 +103,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
