@@ -36,19 +36,26 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')=='True'
 # DEBUG = True
 
-ALLOWED_HOSTS =  os.getenv('ALLOWED_HOSTS', '').split(',')
+# ALLOWED_HOSTS =  os.getenv('ALLOWED_HOSTS', '').split(',')
     # os.getenv('ALLOWED_HOSTS')
-    
+
+
+
+# CORS_ALLOWED_ORIGINS =  os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+
+
+ALLOWED_HOSTS = [ str.strip() for str in  os.getenv('ALLOWED_HOSTS', '').split(',')]
+
+CORS_ALLOWED_ORIGINS = [ str.strip() for str in  os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')]
 
 CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_TRUSTED_ORIGINS')]
 
-# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 AUTH_USER_MODEL = 'user.Users'
 
 
 CORS_ALLOW_CREDENTIALS = os.getenv('CORS_ALLOW_CREDENTIALS').lower() == 'true'
-CORS_ALLOWED_ORIGINS =  os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
 
 CORS_ALLOW_METHODS = (
     "DELETE",
@@ -103,7 +110,8 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -172,7 +180,9 @@ STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
