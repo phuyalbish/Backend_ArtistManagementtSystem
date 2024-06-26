@@ -14,6 +14,7 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
+  && apt-get install -y netcat-openbsd \
     bash \
     build-essential \
     curl \
@@ -37,7 +38,9 @@ RUN poetry install
 
 COPY . .
 
-RUN python manage.py collectstatic --noinput
 
+RUN chmod +x /backend/script.sh
 
-RUN python manage.py migrate
+CMD /bin/sh -c /backend/script.sh
+
+# CMD /bin/sh -c script.sh
