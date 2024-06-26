@@ -3,10 +3,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 
-from django.conf.urls import handler404
-from .views import custom_404
+# from django.conf.urls import handler404
+# from .views import custom_404
 
-handler404 = custom_404
+# handler404 = custom_404
 
 
 from rest_framework_simplejwt.views import (
@@ -28,4 +28,7 @@ urlpatterns = [
     path('api/', include('band.urls')),
     path('api/', include('customizeable.urls')),
 
-] + static(settings.MEDIA_URL,  document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
