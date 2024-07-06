@@ -1,6 +1,6 @@
 from django.urls import path
 
-from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetLoggedInSpecificDeletedMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView,UserLikedMusicList,UserLikedAlbumList,GetAdminMusic
+from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetDisabledMusic, GetHiddenMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView,UserLikedMusicList,UserLikedAlbumList,GetAdminMusic
 from music.views.create import CreateMusic, CreateComment, CreateCommentReply, ToggleMusicLike, ToggleCommentLike, ToggleCommentReplyLike
 
 from music.views.edit import EditMusic, EditComment
@@ -25,7 +25,8 @@ urlpatterns = [
     
     path('music/get/loggedin/', GetLoggedInSpecificMusic.as_view(), name="get_music_loggedIn"),
     path('music/get/deleted/', GetDeletedMusic.as_view(), name="get_deleted_music"),
-    path('music/get/loggedin/deleted/', GetLoggedInSpecificDeletedMusic.as_view(), name="get_music_loggedIn"),
+    path('music/get/disabled/', GetDisabledMusic.as_view(), name="get_disabled_music"),
+    path('music/get/hidden/', GetHiddenMusic.as_view(), name="get_hidden_music"),
     path('music/get/comment/<int:musicid>/', GetComment.as_view(), name="get_comment"),
     path('music/get/<int:musicid>/', GetMusicSpecific.as_view(), name="get_music_specific"),
     path('music/get/album/<int:albumid>/', GetAlbumMusicSpecific.as_view(), name="get_album_music_specific"),

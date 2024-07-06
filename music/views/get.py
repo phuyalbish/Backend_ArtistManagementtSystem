@@ -31,15 +31,7 @@ class GetAdminMusic(APIView):
             return Response({"detail":"No Music Found"}, status=404)
         return Response(serializer.data)
 
-class GetDeletedMusic(APIView):
-    permission_classes = [AllowAny & IsAuthenticated]
-    def get(self, request):
-        try:
-            datas = list(Music.objects.filter(is_deleted=True))
-            serializer = MusicSerializer(datas, many=True)
-        except:
-            return Response({"detail":"No Deleted Music Found"}, status=404)
-        return Response(serializer.data)
+
 
 class GetMusicSpecific(APIView):
     permission_classes = [AllowAny]
@@ -96,7 +88,39 @@ class GetLoggedInSpecificMusic(APIView):
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
     
-class GetLoggedInSpecificDeletedMusic(APIView):
+
+
+
+
+    
+
+class GetDisabledMusic(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            datas = list(Music.objects.filter(is_disabled=True))
+            serializer = MusicSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Music Found"}, status=404)
+        return Response(serializer.data)
+
+
+
+class GetHiddenMusic(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:    
+
+            user = request.user
+            data = Music.objects.filter(artist=user.id, is_deleted=False, is_hidden=True)
+            serializer = MusicSerializer(data, many=True)
+        except:
+            return Response({"detail":"No Music in Artist"}, status=404)
+        return Response(serializer.data)
+    
+
+    
+class GetDeletedMusic(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:    
@@ -106,6 +130,8 @@ class GetLoggedInSpecificDeletedMusic(APIView):
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
+    
+
     
 class GetMusicFromGenreWeather(APIView):
     permission_classes = [AllowAny]

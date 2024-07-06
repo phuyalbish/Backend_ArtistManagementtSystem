@@ -59,18 +59,10 @@ class GetComment(APIView):
         return Response(serializer.data)
     
 
+
+
+
 class GetDeletedAlbum(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request):
-        try:
-            datas = list(Album.objects.filter(is_deleted=True))
-            serializer = AlbumSerializer(datas, many=True)
-        except:
-            return Response({"detail":"No Album Found"}, status=404)
-        return Response(serializer.data)
-
-
-class GetLoggedInSpecificDeletedAlbum(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:    
@@ -79,9 +71,34 @@ class GetLoggedInSpecificDeletedAlbum(APIView):
             data = Album.objects.filter(artist=user.id, is_deleted=True)
             serializer = AlbumSerializer(data, many=True)
         except:
-            return Response({"detail":"No Music in Artist"}, status=404)
+            return Response({"detail":"No Album in Artist"}, status=404)
+        return Response(serializer.data)
+    
+    
+
+class GetDisabledAlbum(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            datas = list(Album.objects.filter(is_disabled=True))
+            serializer = AlbumSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Album Found"}, status=404)
         return Response(serializer.data)
 
+
+
+class GetHiddenAlbum(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:    
+
+            user = request.user
+            data = Album.objects.filter(artist=user.id, is_deleted=False, is_hidden=True)
+            serializer = AlbumSerializer(data, many=True)
+        except:
+            return Response({"detail":"No Album in Artist"}, status=404)
+        return Response(serializer.data)
 
 class GetArtistSpecificAlbum(APIView):
     permission_classes = [AllowAny]
