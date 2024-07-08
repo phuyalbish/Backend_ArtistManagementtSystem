@@ -3,6 +3,7 @@ from django.urls import path
 from music.views.get import GetMusic, GetComment, GetMusicSpecific,GetAlbumMusicSpecific, GetArtistSpecificMusic, GetLoggedInSpecificMusic, GetDeletedMusic, GetDisabledMusic, GetHiddenMusic, GetMusicFromGenreWeather, GetMusicFromGenre, GetAllMusicWithGenre, MusicCountView,UserLikedMusicList,UserLikedAlbumList,GetAdminMusic
 from music.views.create import CreateMusic, CreateComment, CreateCommentReply, ToggleMusicLike, ToggleCommentLike, ToggleCommentReplyLike
 
+from music.views.get import GetMusicManage, GetDeletedMusicManage, GetDisabledMusicManage, GetLoggedInSpecificMusicManage, GetHiddenMusicManage
 from music.views.edit import EditMusic, EditComment
 from music.views.delete import DeleteMusic, DeleteComment, DeleteCommentReply
 from music.views.recover import RecoverMusic
@@ -27,6 +28,14 @@ urlpatterns = [
     path('music/get/deleted/', GetDeletedMusic.as_view(), name="get_deleted_music"),
     path('music/get/disabled/', GetDisabledMusic.as_view(), name="get_disabled_music"),
     path('music/get/hidden/', GetHiddenMusic.as_view(), name="get_hidden_music"),
+
+
+    path('music/get/manage/', GetMusicManage.as_view(), name="get_music_manage"),
+    path('music/get/loggedin/manage/', GetLoggedInSpecificMusicManage.as_view() , name="get_LoggedIn_specific_music_manage"), 
+    path('music/get/deleted/manage/', GetDeletedMusicManage.as_view(), name="get_deleted_music_manage"),
+    path('music/get/disabled/manage/', GetDisabledMusicManage.as_view(), name="get_disabled_music_manage"),
+    path('music/get/hidden/manage/', GetHiddenMusicManage.as_view(), name="get_hidden_music_manage"),
+
     path('music/get/comment/<int:musicid>/', GetComment.as_view(), name="get_comment"),
     path('music/get/<int:musicid>/', GetMusicSpecific.as_view(), name="get_music_specific"),
     path('music/get/album/<int:albumid>/', GetAlbumMusicSpecific.as_view(), name="get_album_music_specific"),

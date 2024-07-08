@@ -147,11 +147,11 @@ class GetDeletedUser(APIView):
 
 
 
-class GetDeletedArtist(APIView):
+class GetDisabledArtist(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = Users.objects.filter(is_deleted=True, is_artist=True, is_superuser=False)
+            datas = Users.objects.filter(is_disabled=True, is_artist=True, is_superuser=False)
             artist_serializer = UserSerializer(datas, many=True)
         except:
             return Response({"detail":"No Artist Found"}, status=404)

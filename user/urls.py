@@ -6,7 +6,7 @@ from user.views.create import CreateUser
 from user.views.edit import EditUser
 from user.views.delete import DeleteUser
 from user.views.recover import RecoverUser
-from user.views.get import GetUser, GetDeletedArtist, GetDeletedUser
+from user.views.get import GetUser, GetDisabledArtist, GetDeletedUser
 from user.views.get import GetArtist
 from user.views.get import GetArtistSpecific
 from user.views.get import GetStaff,GetDeletedStaff,GetStaffSpecific
@@ -35,7 +35,7 @@ urlpatterns = [
     path('credential/', Credential.as_view(),name='credential'),
     path('artist/get/', GetArtist.as_view(), name="get_artist"),
     path('staff/get/', GetStaff.as_view(), name="get_staff"),
-    path('artist/get/deleted/', GetDeletedArtist.as_view(), name="get_deleted_artist"),
+    path('artist/get/disabled/', GetDisabledArtist.as_view(), name="get_disabled_artist"),
     path('staff/get/deleted/', GetDeletedStaff.as_view(), name="get_deleted_staff"),
     path('artist/get/<int:artistid>/', GetArtistSpecific.as_view(), name="get_artist_specific"),
     path('staff/get/<int:staffid>/', GetStaffSpecific.as_view(), name="get_staff_specific"),
