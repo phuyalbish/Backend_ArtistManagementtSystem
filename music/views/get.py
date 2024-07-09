@@ -11,16 +11,19 @@ from core.permissions import  IsStaff, IsArtist
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from genre.models import Genre
 import random
+
+from django.db.models import Q
 from rest_framework import generics
 
 
 
 class GetMusicManage(generics.ListAPIView):
-    permission_classes = [IsAuthenticated, IsStaff | IsArtist]
+    permission_classes = [IsAuthenticated, IsStaff]
     serializer_class = MusicSerializer
     pagination_class = StandardPagination
     def get_queryset(self):
         return Music.objects.filter(is_deleted=False)
+
 
     
 class GetDisabledMusicManage(generics.ListAPIView):
@@ -213,7 +216,7 @@ class GetMusicFromGenre(APIView):
     
 class GetAllMusicWithGenre(APIView):
     def get(self, request):
-        music_with_genre = Music.objects.exclude(genre=None, is_hidden=True, is_deleted=True) 
+        music_with_genre = Music.objects.exclude( Q(genre__isnull=True) | Q(is_hidden=True) | Q(is_deleted=True) )
         serializer = MusicSerializer(music_with_genre, many=True)
         return Response(serializer.data)
 

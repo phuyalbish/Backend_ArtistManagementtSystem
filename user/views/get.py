@@ -1,3 +1,5 @@
+
+from rest_framework import generics
 import django
 from rest_framework import status
 from rest_framework.views import APIView
@@ -7,6 +9,91 @@ from user.models import Users
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Count
 from django.db.models.functions import TruncDate
+from core.permissions import  IsStaff, IsSuperuser
+from core.views import StandardPagination
+
+
+class GetArtistManage(generics.ListAPIView):
+    permission_classes = [IsStaff]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=False, is_artist=True, is_staff=False)
+    
+
+class GetDisabledArtistManage(generics.ListAPIView):
+    permission_classes = [IsStaff]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=False, is_disabled=True, is_artist=True,is_staff=False)
+    
+
+class GetDeletedArtistManage(generics.ListAPIView):
+    permission_classes = [IsStaff]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=True, is_artist=True, is_staff=False)
+    
+
+
+
+class GetUserManage(generics.ListAPIView):
+    permission_classes = [IsStaff]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=False, is_artist=False, is_staff=False)
+    
+
+class GetDisabledUserManage(generics.ListAPIView):
+    permission_classes = [IsStaff]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=False, is_disabled=True, is_artist=False, is_staff=False)
+    
+
+class GetDeletedUserManage(generics.ListAPIView):
+    permission_classes = [IsStaff]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=True, is_artist=False, is_staff=False)
+
+
+
+class GetStaffManage(generics.ListAPIView):
+    permission_classes = [IsSuperuser]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=False, is_staff=True, is_superuser=False)
+    
+
+class GetDeletedStaffManage(generics.ListAPIView):
+    permission_classes = [IsSuperuser]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=True, is_staff=True, is_superuser=False)
+
+
+class GetDisabledStaffManage(generics.ListAPIView):
+    permission_classes = [IsSuperuser]
+    serializer_class = UserSerializer
+    pagination_class = StandardPagination
+    def get_queryset(self):
+        return Users.objects.filter(is_deleted=False, is_disabled=True, is_staff=True, is_superuser=False)
+    
+
+
+
+
+
 
 class GetUser(APIView):
     permission_classes = [AllowAny]
@@ -18,6 +105,8 @@ class GetUser(APIView):
             return Response({"detail":"No User Found"}, status=404)
         return Response(serializer.data)
 
+
+
 class GetArtist(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
@@ -28,15 +117,9 @@ class GetArtist(APIView):
             return Response({"detail":"No Artist Found"}, status=404)
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
 
-class GetStaff(APIView):
-    permission_classes = [AllowAny]
-    def get(self, request):
-        try:
-            datas = Users.objects.filter(is_deleted=False, is_staff=True, is_superuser=False)
-            staff_serializer = UserSerializer(datas, many=True)
-        except:
-            return Response({"detail":"No Staff Found"}, status=404)
-        return Response(staff_serializer.data, status=status.HTTP_200_OK)
+
+
+
 
 class GetUserSpecific(APIView):
     permission_classes = [AllowAny]
@@ -157,13 +240,5 @@ class GetDisabledArtist(APIView):
             return Response({"detail":"No Artist Found"}, status=404)
         return Response(artist_serializer.data, status=status.HTTP_200_OK)
     
-class GetDeletedStaff(APIView):
-    permission_classes = [AllowAny]
-    def get(self, request):
-        try:
-            datas = Users.objects.filter(is_deleted=True, is_staff=True, is_superuser=False)
-            staff_serializer = UserSerializer(datas, many=True)
-        except:
-            return Response({"detail":"No Staff Found"}, status=404)
-        return Response(staff_serializer.data, status=status.HTTP_200_OK)
+
 
