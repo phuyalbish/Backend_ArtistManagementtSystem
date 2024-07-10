@@ -29,3 +29,5 @@ class Login(APIView):
             'access_token':str(token.access_token),
             'user': serializer.data
         })
+    
+    
