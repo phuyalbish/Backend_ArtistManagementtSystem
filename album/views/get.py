@@ -1,5 +1,5 @@
 
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from album.serializers import AlbumSerializer, CommentSerializer
@@ -13,6 +13,8 @@ class GetAlbumManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsStaff | IsArtist]
     serializer_class = AlbumSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
     def get_queryset(self):
         return Album.objects.filter(is_deleted=False)
 
@@ -21,6 +23,8 @@ class GetDisabledAlbumManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsStaff]
     serializer_class = AlbumSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
     def get_queryset(self):
         return Album.objects.filter(is_disabled=True, is_deleted=False)
 
@@ -29,6 +33,8 @@ class GetDeletedAlbumManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsArtist]
     serializer_class = AlbumSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
     def get_queryset(self):
         return Album.objects.filter(artist=self.request.user.id, is_deleted=True)
 
@@ -36,6 +42,8 @@ class GetHiddenAlbumManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsArtist]
     serializer_class = AlbumSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
     def get_queryset(self):
         return Album.objects.filter(artist=self.request.user.id, is_deleted=False, is_hidden=True)
 
@@ -44,6 +52,8 @@ class GetLoggedInSpecificAlbumManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = AlbumSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
     def get_queryset(self):
         return Album.objects.filter(artist=self.request.user.id, is_deleted=False)
 

@@ -1,5 +1,5 @@
 
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from music.serializers import MusicSerializer, CommentSerializer
@@ -21,6 +21,8 @@ class GetMusicManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsStaff]
     serializer_class = MusicSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
     def get_queryset(self):
         return Music.objects.filter(is_deleted=False)
 
@@ -30,6 +32,8 @@ class GetDisabledMusicManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsStaff]
     serializer_class = MusicSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
     def get_queryset(self):
         return Music.objects.filter(is_disabled=True, is_deleted=False)
 
@@ -38,6 +42,8 @@ class GetDeletedMusicManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsArtist]
     serializer_class = MusicSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
     def get_queryset(self):
         return Music.objects.filter(artist=self.request.user.id, is_deleted=True)
 
@@ -45,6 +51,8 @@ class GetHiddenMusicManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsArtist]
     serializer_class = MusicSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
     def get_queryset(self):
         return Music.objects.filter(artist=self.request.user.id, is_deleted=False, is_hidden=True)
 
@@ -53,6 +61,8 @@ class GetLoggedInSpecificMusicManage(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = MusicSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
     def get_queryset(self):
         return Music.objects.filter(artist=self.request.user.id, is_deleted=False)
 

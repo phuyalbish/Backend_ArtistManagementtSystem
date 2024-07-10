@@ -1,5 +1,5 @@
 
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,6 +14,8 @@ class GetTheme(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsSuperuser | IsArtist | IsStaff]
     serializer_class = CustomThemeSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
 
     def get_queryset(self):
         return CustomTheme.objects.filter(is_deleted=False)
@@ -36,6 +38,9 @@ class GetDeletedTheme(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsSuperuser | IsArtist | IsStaff]
     serializer_class = CustomThemeSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
+
 
     def get_queryset(self):
         return CustomTheme.objects.filter(is_deleted=True)

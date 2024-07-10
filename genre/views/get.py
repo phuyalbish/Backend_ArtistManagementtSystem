@@ -1,5 +1,5 @@
 
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from genre.serializers import GenreSerializer
@@ -12,6 +12,8 @@ class GetGenreManage(generics.ListAPIView):
     permission_classes = [IsStaff]
     serializer_class = GenreSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','weather',)
 
     def get_queryset(self):
         return Genre.objects.filter(is_deleted=False)
@@ -21,6 +23,8 @@ class GetDeletedGenreManage(generics.ListAPIView):
     permission_classes = [IsStaff]
     serializer_class = GenreSerializer
     pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','weather',)
 
     def get_queryset(self):
         return Genre.objects.filter(is_deleted=True)
