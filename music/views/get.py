@@ -160,7 +160,7 @@ class GetDisabledMusic(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
-            datas = list(Music.objects.filter(is_disabled=True))
+            datas = list(Music.objects.filter(is_disabled=True,  is_deleted=False))
             serializer = MusicSerializer(datas, many=True)
         except:
             return Response({"detail":"No Music Found"}, status=404)

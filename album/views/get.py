@@ -64,7 +64,7 @@ class GetAlbum(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            datas = list(Album.objects.filter(is_hidden=False, is_deleted=False))
+            datas = list(Album.objects.filter(is_hidden=False, is_deleted=False, is_disabled=False))
             serializer = AlbumSerializer(datas, many=True)
         except:
             return Response({"detail":"No Album Found"}, status=404)
@@ -74,7 +74,7 @@ class GetAlbumSpecific(APIView):
     permission_classes = [AllowAny]
     def get(self, request, albumid):
         try:
-            data = Album.objects.get(pk=albumid, is_deleted=False)
+            data = Album.objects.get(pk=albumid, is_deleted=False, is_disabled=False)
             serializer = AlbumSerializer(data, many=False)
         except:
             return Response({"detail":"No Album Found"}, status=404)
@@ -131,7 +131,7 @@ class GetDisabledAlbum(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
-            datas = list(Album.objects.filter(is_disabled=True))
+            datas = list(Album.objects.filter(is_disabled=True, is_deleted=False))
             serializer = AlbumSerializer(datas, many=True)
         except:
             return Response({"detail":"No Album Found"}, status=404)
@@ -155,7 +155,7 @@ class GetArtistSpecificAlbum(APIView):
     permission_classes = [AllowAny]
     def get(self, request, artistid):
         try:    
-            data = Album.objects.filter(artist=artistid, is_deleted=False, is_hidden=False)
+            data = Album.objects.filter(artist=artistid, is_deleted=False, is_disabled=False, is_hidden=False)
             serializer = AlbumSerializer(data, many=True)
         except:
             return Response({"detail":"No Album in Artist"}, status=404)

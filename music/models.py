@@ -15,7 +15,7 @@ class Music(models.Model):
     lyrics= models.TextField(null=True)
     genre = models.ForeignKey(Genre, null=True, on_delete=models.SET_NULL)
     album = models.ForeignKey(Album, null=True, on_delete=models.SET_NULL)
-    artist = models.ForeignKey(Users, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='artist_music')
     band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(default=timezone.now)
     release_at = models.DateTimeField(default=timezone.now)

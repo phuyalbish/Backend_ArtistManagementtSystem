@@ -7,7 +7,7 @@ class Album(models.Model):
     description =  models.TextField( null=False)
     img_cover = models.ImageField(upload_to='uploads/album/cover/', null=True, default='uploads/default/cover.jpeg' )
     img_profile = models.ImageField(upload_to='uploads/album/profile/', null=True,   default='uploads/default/defaultMusic.jpg' )
-    artist = models.ForeignKey(Users, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='artist_album')
     band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(default=timezone.now)
     release_at = models.DateTimeField(default=timezone.now)
