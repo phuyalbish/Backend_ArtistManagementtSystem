@@ -1,15 +1,74 @@
 
-from rest_framework import status
+from rest_framework import generics, filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from music.serializers import MusicSerializer, LikeSerializer, CommentSerializer, CommentReplySerializer,CommentLikeSerializer, CommentReplyLikeSerializer
+from music.serializers import MusicSerializer, CommentSerializer
 from album.serializers import AlbumSerializer
-from music.models import Music, Like, Comment, CommentLike, CommentReply, CommentReplyLike
+from music.models import Music, Like, Comment
 from album.models import Album
+from core.views import StandardPagination
+from core.permissions import  IsStaff, IsArtist
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from genre.models import Genre
 import random
+
+from django.db.models import Q
 from rest_framework import generics
+
+
+
+class GetMusicManage(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, IsStaff]
+    serializer_class = MusicSerializer
+    pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
+    def get_queryset(self):
+        return Music.objects.filter(is_deleted=False)
+
+
+    
+class GetDisabledMusicManage(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, IsStaff]
+    serializer_class = MusicSerializer
+    pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
+    def get_queryset(self):
+        return Music.objects.filter(is_disabled=True, is_deleted=False)
+
+    
+class GetDeletedMusicManage(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, IsArtist]
+    serializer_class = MusicSerializer
+    pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
+    def get_queryset(self):
+        return Music.objects.filter(artist=self.request.user.id, is_deleted=True)
+
+class GetHiddenMusicManage(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, IsArtist]
+    serializer_class = MusicSerializer
+    pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
+    def get_queryset(self):
+        return Music.objects.filter(artist=self.request.user.id, is_deleted=False, is_hidden=True)
+
+
+class GetLoggedInSpecificMusicManage(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = MusicSerializer
+    pagination_class = StandardPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name','description',)
+    def get_queryset(self):
+        return Music.objects.filter(artist=self.request.user.id, is_deleted=False)
+
+    
+
+
 
 class GetMusic(APIView):
     permission_classes = [AllowAny]
@@ -21,6 +80,9 @@ class GetMusic(APIView):
             return Response({"detail":"No Music Found"}, status=404)
         return Response(serializer.data)
 
+
+
+
 class GetAdminMusic(APIView):
     permission_classes = [IsAuthenticated & IsAdminUser]
     def get(self, request):
@@ -31,15 +93,7 @@ class GetAdminMusic(APIView):
             return Response({"detail":"No Music Found"}, status=404)
         return Response(serializer.data)
 
-class GetDeletedMusic(APIView):
-    permission_classes = [AllowAny & IsAuthenticated]
-    def get(self, request):
-        try:
-            datas = list(Music.objects.filter(is_deleted=True))
-            serializer = MusicSerializer(datas, many=True)
-        except:
-            return Response({"detail":"No Deleted Music Found"}, status=404)
-        return Response(serializer.data)
+
 
 class GetMusicSpecific(APIView):
     permission_classes = [AllowAny]
@@ -96,7 +150,39 @@ class GetLoggedInSpecificMusic(APIView):
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
     
-class GetLoggedInSpecificDeletedMusic(APIView):
+
+
+
+
+    
+
+class GetDisabledMusic(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            datas = list(Music.objects.filter(is_disabled=True,  is_deleted=False))
+            serializer = MusicSerializer(datas, many=True)
+        except:
+            return Response({"detail":"No Music Found"}, status=404)
+        return Response(serializer.data)
+
+
+
+class GetHiddenMusic(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:    
+
+            user = request.user
+            data = Music.objects.filter(artist=user.id, is_deleted=False, is_hidden=True)
+            serializer = MusicSerializer(data, many=True)
+        except:
+            return Response({"detail":"No Music in Artist"}, status=404)
+        return Response(serializer.data)
+    
+
+    
+class GetDeletedMusic(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:    
@@ -106,6 +192,8 @@ class GetLoggedInSpecificDeletedMusic(APIView):
         except:
             return Response({"detail":"No Music in Artist"}, status=404)
         return Response(serializer.data)
+    
+
     
 class GetMusicFromGenreWeather(APIView):
     permission_classes = [AllowAny]
@@ -138,7 +226,7 @@ class GetMusicFromGenre(APIView):
     
 class GetAllMusicWithGenre(APIView):
     def get(self, request):
-        music_with_genre = Music.objects.exclude(genre=None, is_hidden=True, is_deleted=True) 
+        music_with_genre = Music.objects.exclude( Q(genre__isnull=True) | Q(is_hidden=True) | Q(is_deleted=True) )
         serializer = MusicSerializer(music_with_genre, many=True)
         return Response(serializer.data)
 

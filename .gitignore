@@ -4,11 +4,11 @@ __pycache__/*
 db.sqlite3
 */migrations/*
 !*/migrations/__init__.py
-media/uploads/user/*
-media/uploads/music/*
-media/uploads/album/*
-media/uploads/band/*
-media/uploads/theme/*
+# media/uploads/user/*
+# media/uploads/music/*
+# media/uploads/album/*
+# media/uploads/band/*
+# media/uploads/theme/*
 !media/uploads/default
 
 .env

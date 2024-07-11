@@ -15,7 +15,7 @@ class Music(models.Model):
     lyrics= models.TextField(null=True)
     genre = models.ForeignKey(Genre, null=True, on_delete=models.SET_NULL)
     album = models.ForeignKey(Album, null=True, on_delete=models.SET_NULL)
-    artist = models.ForeignKey(Users, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='artist_music')
     band = models.ForeignKey(Band, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(default=timezone.now)
     release_at = models.DateTimeField(default=timezone.now)
@@ -25,7 +25,7 @@ class Music(models.Model):
     is_released = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
     modified_by = models.IntegerField(null=True)
-    theme = models.ForeignKey(CustomTheme, null=True, on_delete=models.CASCADE)
+    theme = models.ForeignKey(CustomTheme, null=True, on_delete=models.SET_NULL)
 
 class Like(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE,  related_name='music_like_user')

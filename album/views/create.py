@@ -10,8 +10,9 @@ from rest_framework.permissions import IsAuthenticated
 class CreateAlbum(APIView):
     permission_classes = [IsAuthenticated & (IsArtist | IsBand)]
     def post(self, request):
-        data = request.data
-        data['artist'] = request.user.id
+        data = request.data.copy() if isinstance(request.data, dict) else request.POST.copy()
+        if 'artist' not in data:
+            data['artist'] = request.user.id
 
         serializer = AlbumSerializer(data=data)
         if serializer.is_valid():

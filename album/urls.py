@@ -1,7 +1,7 @@
 from django.urls import path
 
-from album.views.get import GetAlbum, GetComment, GetLoggedInSpecificAlbum, GetDeletedAlbum, GetLoggedInSpecificDeletedAlbum, AlbumCountView,GetArtistSpecificAlbum
-
+from album.views.get import GetAlbum, GetComment, GetLoggedInSpecificAlbum, GetDeletedAlbum,GetDisabledAlbum,GetHiddenAlbum,  AlbumCountView,GetArtistSpecificAlbum
+from album.views.get import GetAlbumManage, GetDeletedAlbumManage, GetDisabledAlbumManage, GetLoggedInSpecificAlbumManage, GetHiddenAlbumManage
 from album.views.get import GetAlbumSpecific
 from album.views.create import CreateAlbum, ToggleCommentLike, ToggleAlbumLike, ToggleCommentReplyLike, CreateComment, CreateCommentReply
 from album.views.edit import EditAlbum
@@ -14,10 +14,19 @@ from album.views.unhide import UnHideAlbum
 
 urlpatterns = [
     path('album/get/', GetAlbum.as_view(), name="get_album"),
-    path('album/get/loggedin/', GetLoggedInSpecificAlbum.as_view()), 
+    path('album/get/loggedin/', GetLoggedInSpecificAlbum.as_view(), name="get_LoggedIn_specific_album_manage"), 
     path('album/get/<int:albumid>/', GetAlbumSpecific.as_view(), name="get_album_specific"),
-    path('album/get/deleted/', GetDeletedAlbum.as_view(), name="get_deleted_music"),
-    path('album/get/loggedin/deleted/', GetLoggedInSpecificDeletedAlbum.as_view(), name="get_music_loggedIn"),
+    path('album/get/deleted/', GetDeletedAlbum.as_view(), name="get_deleted_album"),
+    path('album/get/disabled/', GetDisabledAlbum.as_view(), name="get_disabled_album"),
+    path('album/get/hidden/', GetHiddenAlbum.as_view(), name="get_hidden_album"),
+
+
+    path('album/get/manage/', GetAlbumManage.as_view(), name="get_album_manage"),
+    path('album/get/loggedin/manage/', GetLoggedInSpecificAlbumManage.as_view() , name="get_LoggedIn_specific_album_manage"), 
+    path('album/get/deleted/manage/', GetDeletedAlbumManage.as_view(), name="get_deleted_album_manage"),
+    path('album/get/disabled/manage/', GetDisabledAlbumManage.as_view(), name="get_disabled_album_manage"),
+    path('album/get/hidden/manage/', GetHiddenAlbumManage.as_view(), name="get_hidden_album_manage"),
+
     path('album/post/', CreateAlbum.as_view(), name="post_album"),
     path('album/comment/', CreateComment.as_view(), name="comment_album"),
     path('album/comment/reply/', CreateCommentReply.as_view(), name="reply_comment"),

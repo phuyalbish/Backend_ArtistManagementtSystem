@@ -97,6 +97,7 @@ class MusicSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField()
     album_name = serializers.SerializerMethodField()
     artist_name = serializers.SerializerMethodField()
+    genre_name = serializers.SerializerMethodField()
     
     class Meta:
         model = Music
@@ -117,6 +118,9 @@ class MusicSerializer(serializers.ModelSerializer):
 
     def get_artist_name(self, obj):
         return obj.artist.firstname if obj.artist else None
+    
+    def get_genre_name(self, obj):
+        return obj.genre.name if obj.genre else None
     
 
 

@@ -11,6 +11,7 @@ class CustomTheme(models.Model):
     img_profile = models.ImageField(upload_to='uploads/custombg/', null=True,   default='uploads/default/defaultCustomBg.jpg' )
     is_deleted = models.BooleanField(default=False)
 
+
 class CustomThemeSerializer(serializers.ModelSerializer):
       class Meta:
         model = CustomTheme
