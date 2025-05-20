@@ -1,8 +1,7 @@
-FROM python:3.12-slim-bookworm
-ARG DJANGO_ENV 
+FROM python:3.10.16-slim-bookworm AS dev
 
-ENV DJANGO_ENV=${DJANGO_ENV} \
-  PYTHONFAULTHANDLER=1 \
+
+ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
   PYTHONHASHSEED=random \
   PIP_NO_CACHE_DIR=off \
@@ -14,7 +13,6 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
-  && apt-get install -y netcat-openbsd \
     bash \
     build-essential \
     curl \
@@ -27,20 +25,33 @@ RUN apt-get update \
 
 WORKDIR /backend
 
-
 COPY pyproject.toml poetry.lock ./
+
 
 RUN poetry lock
 RUN poetry install
-# COPY requirements.txt ./
-
-# RUN pip install -r requirements.txt
 
 COPY . .
 
 
-RUN chmod +x /backend/script.sh
+RUN chmod +x /backend/build.sh
 
-CMD /bin/sh -c /backend/script.sh
 
-# CMD /bin/sh -c script.sh
+
+CMD ["/bin/sh", "-c", "/backend/build.sh"]
+
+
+
+# To run and build Directly without using docker-compose 
+
+
+# To Build
+
+# docker build -t musica-backend-prod-image -f Dockerfile.production .
+
+# To Run
+# docker run -it --rm -e  -p 8082:8082  --name musica-backend-prod   musica-backend-prod-image
+
+
+# From env file
+# docker run -it --rm --env-file .env  -p 8082:8082  --name musica-backend-prod  musica-backend-prod-image

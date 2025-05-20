@@ -1,14 +1,16 @@
 .venv
 __pycache__
 __pycache__/*
+media/*
+!media/default/
+.DS_Store
+.env
+.env.production
+db_backup.json
 db.sqlite3
+staticfiles
+.python-version
+start.sh
+migrations/*
 */migrations/*
 !*/migrations/__init__.py
-# media/uploads/user/*
-# media/uploads/music/*
-# media/uploads/album/*
-# media/uploads/band/*
-# media/uploads/theme/*
-!media/uploads/default
-
-.env
